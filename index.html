@@ -1,0 +1,1506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mahaboobbasha Dudekula | AI Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+:root {
+  --bg: #030711;
+  --bg2: #070d1a;
+  --bg3: #0a1128;
+  --cyan: #00d4ff;
+  --purple: #7b2fff;
+  --green: #00ff88;
+  --orange: #ff6b35;
+  --pink: #ff2d78;
+  --text: #e2e8f0;
+  --muted: #64748b;
+  --border: rgba(0,212,255,0.2);
+  --glow-c: 0 0 25px rgba(0,212,255,0.4);
+  --glow-p: 0 0 25px rgba(123,47,255,0.4);
+  --glow-g: 0 0 25px rgba(0,255,136,0.4);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Rajdhani',sans-serif;
+  font-size:16px;
+  line-height:1.6;
+  overflow-x:hidden;
+}
+body::after{
+  content:'';
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.04) 2px,rgba(0,0,0,0.04) 4px);
+  pointer-events:none;z-index:9999;
+}
+a{color:var(--cyan);text-decoration:none}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--purple);border-radius:3px}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  padding:16px 40px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(3,7,17,0.85);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo{
+  font-family:'Orbitron',sans-serif;
+  font-size:1rem;font-weight:700;
+  color:var(--cyan);
+  letter-spacing:2px;
+  text-shadow:var(--glow-c);
+}
+.nav-logo span{color:var(--purple)}
+.nav-links{display:flex;gap:32px;list-style:none}
+.nav-links a{
+  font-family:'Orbitron',sans-serif;
+  font-size:0.7rem;
+  font-weight:700;
+  color:var(--muted);
+  letter-spacing:2px;
+  text-transform:uppercase;
+  transition:color 0.3s,text-shadow 0.3s;
+}
+.nav-links a:hover{color:var(--cyan);text-shadow:var(--glow-c)}
+.nav-cta{
+  padding:8px 20px;
+  border:1px solid var(--cyan);
+  border-radius:4px;
+  font-family:'Orbitron',sans-serif;
+  font-size:0.65rem;
+  font-weight:700;
+  color:var(--cyan);
+  letter-spacing:2px;
+  text-transform:uppercase;
+  transition:all 0.3s;
+}
+.nav-cta:hover{background:var(--cyan);color:var(--bg);box-shadow:var(--glow-c)}
+
+/* ── HERO ── */
+#hero{
+  position:relative;
+  height:100vh;
+  display:flex;align-items:center;justify-content:flex-start;
+  padding:0 8%;
+  overflow:hidden;
+}
+#heroCanvas{
+  position:absolute;top:0;left:0;
+  width:100%;height:100%;z-index:0;
+}
+.hero-content{
+  position:relative;z-index:10;
+  max-width:680px;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:6px 16px;
+  border:1px solid rgba(0,212,255,0.3);
+  border-radius:100px;
+  background:rgba(0,212,255,0.05);
+  font-family:'Share Tech Mono',monospace;
+  font-size:0.75rem;
+  color:var(--cyan);
+  letter-spacing:2px;
+  margin-bottom:24px;
+}
+.hero-badge::before{
+  content:'';
+  width:6px;height:6px;border-radius:50%;
+  background:var(--green);
+  box-shadow:0 0 8px var(--green);
+  animation:pulse-dot 1.5s infinite;
+}
+@keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(1.4)}}
+
+.hero-name{
+  font-family:'Orbitron',sans-serif;
+  font-size:clamp(2.2rem,5vw,4rem);
+  font-weight:900;
+  line-height:1.1;
+  color:#fff;
+  letter-spacing:2px;
+  margin-bottom:8px;
+}
+.glitch{
+  position:relative;
+  display:inline-block;
+}
+.glitch::before,.glitch::after{
+  content:attr(data-text);
+  position:absolute;top:0;left:0;
+  width:100%;height:100%;
+  opacity:0;
+}
+.glitch::before{
+  color:var(--cyan);
+  animation:glitch-top 4s infinite;
+  clip-path:polygon(0 0,100% 0,100% 40%,0 40%);
+}
+.glitch::after{
+  color:var(--purple);
+  animation:glitch-bot 4s infinite;
+  clip-path:polygon(0 60%,100% 60%,100% 100%,0 100%);
+}
+@keyframes glitch-top{
+  0%,88%,100%{transform:translateX(0);opacity:0}
+  90%{transform:translateX(-4px);opacity:0.9}
+  92%{transform:translateX(4px);opacity:0.9}
+  94%{transform:translateX(-2px);opacity:0.9}
+  96%{transform:translateX(0);opacity:0}
+}
+@keyframes glitch-bot{
+  0%,85%,100%{transform:translateX(0);opacity:0}
+  87%{transform:translateX(4px);opacity:0.9}
+  89%{transform:translateX(-4px);opacity:0.9}
+  91%{transform:translateX(2px);opacity:0.9}
+  93%{transform:translateX(0);opacity:0}
+}
+.hero-typerow{
+  display:flex;align-items:center;gap:8px;
+  font-family:'Share Tech Mono',monospace;
+  font-size:1.2rem;
+  color:var(--cyan);
+  margin:20px 0 16px;
+  text-shadow:var(--glow-c);
+}
+.hero-typerow .prompt{color:var(--green)}
+.cursor{
+  display:inline-block;width:10px;height:1.2em;
+  background:var(--cyan);
+  animation:blink 0.8s step-end infinite;
+  vertical-align:text-bottom;
+}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.hero-sub{
+  font-size:1.1rem;
+  color:var(--muted);
+  font-weight:400;
+  margin-bottom:32px;
+  line-height:1.5;
+}
+.hero-btns{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:48px}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:12px 28px;
+  border-radius:4px;
+  font-family:'Orbitron',sans-serif;
+  font-size:0.75rem;
+  font-weight:700;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  transition:all 0.3s;
+  position:relative;overflow:hidden;
+}
+.btn::before{
+  content:'';
+  position:absolute;top:-100%;left:-100%;
+  width:300%;height:300%;
+  background:linear-gradient(45deg,transparent 30%,rgba(255,255,255,0.05) 50%,transparent 70%);
+  transition:all 0.5s;
+}
+.btn:hover::before{top:-50%;left:-50%}
+.btn-primary{background:var(--cyan);color:var(--bg);box-shadow:var(--glow-c)}
+.btn-primary:hover{background:#00eeff;color:var(--bg);box-shadow:0 0 40px rgba(0,212,255,0.7);transform:translateY(-2px)}
+.btn-outline{border:1px solid var(--purple);color:var(--purple)}
+.btn-outline:hover{background:var(--purple);color:#fff;box-shadow:var(--glow-p);transform:translateY(-2px)}
+.btn-ghost{border:1px solid var(--border);color:var(--muted)}
+.btn-ghost:hover{border-color:var(--cyan);color:var(--cyan)}
+
+.hero-stats{display:flex;gap:40px}
+.stat{display:flex;flex-direction:column}
+.stat-num{
+  font-family:'Orbitron',sans-serif;
+  font-size:2rem;font-weight:900;
+  color:var(--cyan);
+  text-shadow:var(--glow-c);
+}
+.stat-label{font-size:0.8rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+
+.hero-scroll{
+  position:absolute;bottom:40px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  z-index:10;
+}
+.scroll-line{
+  width:1px;height:60px;
+  background:linear-gradient(180deg,var(--cyan),transparent);
+  animation:scroll-anim 1.5s ease-in-out infinite;
+}
+@keyframes scroll-anim{0%,100%{transform:scaleY(1);opacity:1}50%{transform:scaleY(0.5);opacity:0.4}}
+.scroll-txt{
+  font-family:'Share Tech Mono',monospace;
+  font-size:0.65rem;color:var(--muted);letter-spacing:3px;
+}
+
+/* ── SECTIONS ── */
+section{padding:100px 8%}
+.section-header{margin-bottom:60px}
+.section-tag{
+  font-family:'Share Tech Mono',monospace;
+  font-size:0.75rem;color:var(--green);
+  letter-spacing:3px;text-transform:uppercase;
+  margin-bottom:8px;
+}
+.section-title{
+  font-family:'Orbitron',sans-serif;
+  font-size:clamp(1.6rem,3vw,2.4rem);
+  font-weight:700;
+  color:#fff;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  position:relative;
+}
+.section-title span{color:var(--cyan)}
+.section-line{
+  display:block;
+  width:80px;height:3px;
+  background:linear-gradient(90deg,var(--cyan),var(--purple),transparent);
+  margin-top:12px;border-radius:2px;
+}
+
+/* ── ABOUT ── */
+#about{background:var(--bg2)}
+.about-grid{
+  display:grid;
+  grid-template-columns:220px 1fr 1fr;
+  gap:40px;align-items:start;
+}
+@media(max-width:900px){
+  .about-grid{grid-template-columns:1fr 1fr}
+  .avatar-col{display:none}
+}
+.avatar-col{display:flex;flex-direction:column;align-items:center;gap:20px}
+.avatar-ring{
+  position:relative;
+  width:180px;height:180px;
+}
+.avatar-ring::before{
+  content:'';
+  position:absolute;inset:-3px;
+  border-radius:50%;
+  background:linear-gradient(135deg,var(--cyan),var(--purple),var(--green),var(--cyan));
+  animation:ring-spin 4s linear infinite;
+  z-index:0;
+}
+@keyframes ring-spin{to{transform:rotate(360deg)}}
+.avatar-ring::after{
+  content:'';
+  position:absolute;inset:3px;
+  border-radius:50%;
+  background:var(--bg2);
+  z-index:1;
+}
+.avatar-img{
+  position:relative;z-index:2;
+  width:174px;height:174px;
+  border-radius:50%;
+  object-fit:cover;object-position:top;
+  display:block;
+  margin:3px auto 0;
+  filter:grayscale(10%) contrast(1.05);
+}
+.avatar-name{
+  font-family:'Orbitron',sans-serif;
+  font-size:0.75rem;font-weight:700;
+  color:var(--cyan);letter-spacing:2px;
+  text-align:center;
+  text-transform:uppercase;
+}
+.avatar-title{
+  font-family:'Share Tech Mono',monospace;
+  font-size:0.7rem;color:var(--muted);
+  letter-spacing:1px;text-align:center;
+}
+.avatar-status{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:4px 12px;
+  border:1px solid rgba(0,255,136,0.3);
+  border-radius:100px;
+  font-family:'Share Tech Mono',monospace;
+  font-size:0.65rem;color:var(--green);
+  background:rgba(0,255,136,0.05);
+}
+.avatar-status::before{
+  content:'';width:5px;height:5px;border-radius:50%;
+  background:var(--green);box-shadow:0 0 6px var(--green);
+  animation:pulse-dot 1.5s infinite;
+}
+.about-text{font-size:1.05rem;color:var(--muted);line-height:1.9;margin-bottom:24px}
+.about-text strong{color:var(--text)}
+.about-links{display:flex;gap:16px;flex-wrap:wrap}
+.link-chip{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:8px 18px;
+  border:1px solid var(--border);
+  border-radius:4px;
+  font-family:'Share Tech Mono',monospace;
+  font-size:0.8rem;color:var(--muted);
+  transition:all 0.3s;
+}
+.link-chip:hover{border-color:var(--cyan);color:var(--cyan);box-shadow:var(--glow-c)}
+.competencies{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+.comp-item{
+  display:flex;align-items:center;gap:10px;
+  padding:12px 16px;
+  background:rgba(0,212,255,0.04);
+  border:1px solid var(--border);
+  border-radius:6px;
+  font-size:0.85rem;
+  transition:all 0.3s;
+}
+.comp-item:hover{border-color:var(--cyan);background:rgba(0,212,255,0.08)}
+.comp-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--cyan);
+  box-shadow:0 0 8px var(--cyan);
+  flex-shrink:0;
+}
+
+/* ── SKILLS ── */
+#skills{background:var(--bg)}
+.skills-grid{display:flex;flex-direction:column;gap:28px}
+.skill-category{
+  background:rgba(7,13,26,0.8);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:24px 28px;
+  position:relative;overflow:hidden;
+  transition:border-color 0.3s,box-shadow 0.3s;
+}
+.skill-category::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--cyan),transparent);
+}
+.skill-category:hover{border-color:rgba(0,212,255,0.4);box-shadow:var(--glow-c)}
+.skill-cat-name{
+  font-family:'Orbitron',sans-serif;
+  font-size:0.75rem;font-weight:700;
+  color:var(--cyan);letter-spacing:2px;
+  text-transform:uppercase;
+  margin-bottom:14px;
+}
+.skill-tags{display:flex;flex-wrap:wrap;gap:8px}
+.tag{
+  padding:5px 14px;
+  border-radius:4px;
+  font-family:'Share Tech Mono',monospace;
+  font-size:0.78rem;
+  transition:all 0.2s;
+}
+.tag-c{background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.25);color:var(--cyan)}
+.tag-p{background:rgba(123,47,255,0.08);border:1px solid rgba(123,47,255,0.25);color:var(--purple)}
+.tag-g{background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.25);color:var(--green)}
+.tag-o{background:rgba(255,107,53,0.08);border:1px solid rgba(255,107,53,0.25);color:var(--orange)}
+.tag:hover{transform:translateY(-2px);filter:brightness(1.3)}
+
+/* ── EXPERIENCE ── */
+#experience{background:var(--bg2)}
+.exp-company{
+  margin-bottom:60px;
+}
+.company-header{
+  display:flex;align-items:center;gap:16px;
+  padding:20px 28px;
+  background:linear-gradient(135deg,rgba(123,47,255,0.1),rgba(0,212,255,0.05));
+  border:1px solid rgba(123,47,255,0.3);
+  border-radius:12px;
+  margin-bottom:40px;
+}
+.company-logo{
+  width:48px;height:48px;
+  border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Orbitron',sans-serif;
+  font-size:1rem;font-weight:900;
+  background:linear-gradient(135deg,var(--purple),var(--cyan));
+  color:#fff;
+  flex-shrink:0;
+}
+.company-info h3{
+  font-family:'Orbitron',sans-serif;
+  font-size:1rem;font-weight:700;
+  color:#fff;letter-spacing:2px;
+}
+.company-info p{font-size:0.85rem;color:var(--muted)}
+.company-badge{
+  margin-left:auto;
+  padding:6px 16px;
+  border:1px solid var(--green);
+  border-radius:100px;
+  font-family:'Share Tech Mono',monospace;
+  font-size:0.7rem;color:var(--green);
+  letter-spacing:1px;
+  white-space:nowrap;
+}
+.timeline{position:relative;padding-left:32px}
+.timeline::before{
+  content:'';
+  position:absolute;left:6px;top:0;bottom:0;
+  width:2px;
+  background:linear-gradient(180deg,var(--cyan),var(--purple),rgba(123,47,255,0.1));
+}
+.tl-item{
+  position:relative;
+  margin-bottom:36px;
+  opacity:0;transform:translateX(-20px);
+  transition:opacity 0.5s,transform 0.5s;
+}
+.tl-item.visible{opacity:1;transform:translateX(0)}
+.tl-dot{
+  position:absolute;left:-29px;top:6px;
+  width:14px;height:14px;border-radius:50%;
+  background:var(--bg);
+  border:2px solid var(--cyan);
+  box-shadow:0 0 12px var(--cyan);
+}
+.tl-period{
+  font-family:'Share Tech Mono',monospace;
+  font-size:0.7rem;color:var(--cyan);
+  letter-spacing:1px;margin-bottom:6px;
+}
+.tl-title{
+  font-family:'Orbitron',sans-serif;
+  font-size:0.9rem;font-weight:700;
+  color:#fff;letter-spacing:1px;margin-bottom:12px;
+}
+.tl-bullets{list-style:none;display:flex;flex-direction:column;gap:6px}
+.tl-bullets li{
+  font-size:0.95rem;color:var(--muted);
+  padding-left:16px;position:relative;line-height:1.6;
+}
+.tl-bullets li::before{
+  content:'▸';
+  position:absolute;left:0;color:var(--cyan);
+}
+
+/* ── PROJECTS ── */
+#projects{background:var(--bg)}
+.proj-filter{
+  display:flex;gap:10px;flex-wrap:wrap;margin-bottom:40px;
+}
+.filter-btn{
+  padding:7px 18px;
+  border:1px solid var(--border);
+  border-radius:100px;
+  background:transparent;
+  font-family:'Share Tech Mono',monospace;
+  font-size:0.78rem;
+  color:var(--muted);
+  cursor:pointer;
+  transition:all 0.3s;
+}
+.filter-btn:hover,.filter-btn.active{
+  border-color:var(--cyan);color:var(--cyan);
+  background:rgba(0,212,255,0.08);
+}
+.proj-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(340px,1fr));
+  gap:24px;
+}
+.proj-card{
+  background:rgba(7,13,26,0.9);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:28px;
+  position:relative;overflow:hidden;
+  transition:all 0.3s;
+  display:flex;flex-direction:column;
+  opacity:0;transform:translateY(20px);
+  transition:opacity 0.5s,transform 0.5s,border-color 0.3s,box-shadow 0.3s;
+}
+.proj-card.visible{opacity:1;transform:translateY(0)}
+.proj-card::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--cyan),transparent);
+  transition:opacity 0.3s;opacity:0;
+}
+.proj-card:hover{border-color:rgba(0,212,255,0.4);box-shadow:var(--glow-c);transform:translateY(-6px)}
+.proj-card:hover::before{opacity:1}
+.proj-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px}
+.proj-cat{
+  padding:3px 10px;
+  border-radius:4px;
+  font-family:'Share Tech Mono',monospace;
+  font-size:0.68rem;letter-spacing:1px;text-transform:uppercase;
+}
+.cat-genai{background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.3);color:var(--cyan)}
+.cat-mlops{background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.3);color:var(--green)}
+.cat-bench{background:rgba(123,47,255,0.1);border:1px solid rgba(123,47,255,0.3);color:var(--purple)}
+.cat-auto{background:rgba(255,107,53,0.1);border:1px solid rgba(255,107,53,0.3);color:var(--orange)}
+.proj-github{
+  display:flex;align-items:center;gap:4px;
+  padding:4px 10px;
+  border:1px solid var(--border);
+  border-radius:4px;
+  font-family:'Share Tech Mono',monospace;
+  font-size:0.7rem;color:var(--muted);
+  transition:all 0.3s;
+}
+.proj-github:hover{border-color:var(--cyan);color:var(--cyan)}
+.proj-name{
+  font-family:'Orbitron',sans-serif;
+  font-size:0.95rem;font-weight:700;
+  color:#fff;letter-spacing:1px;
+  margin-bottom:10px;line-height:1.3;
+}
+.proj-desc{font-size:0.9rem;color:var(--muted);line-height:1.7;margin-bottom:16px;flex:1}
+.proj-tags{display:flex;flex-wrap:wrap;gap:6px}
+.proj-tag{
+  padding:3px 10px;
+  border-radius:3px;
+  font-family:'Share Tech Mono',monospace;
+  font-size:0.68rem;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+  color:var(--muted);
+}
+
+/* ── CERTS ── */
+#certs{background:var(--bg2)}
+.certs-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:16px;
+}
+.cert-card{
+  display:flex;align-items:center;gap:14px;
+  padding:18px 20px;
+  background:rgba(7,13,26,0.8);
+  border:1px solid var(--border);
+  border-radius:10px;
+  transition:all 0.3s;
+  opacity:0;transform:translateY(15px);
+  transition:opacity 0.4s,transform 0.4s,border-color 0.3s;
+}
+.cert-card.visible{opacity:1;transform:translateY(0)}
+.cert-card:hover{border-color:var(--green);box-shadow:var(--glow-g)}
+.cert-icon{
+  width:40px;height:40px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.2rem;flex-shrink:0;
+}
+.cert-info .cert-name{font-family:'Rajdhani',sans-serif;font-size:0.9rem;font-weight:600;color:#fff;line-height:1.3}
+.cert-info .cert-org{font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:var(--muted);margin-top:2px}
+
+.edu-card{
+  background:rgba(7,13,26,0.8);
+  border:1px solid rgba(123,47,255,0.3);
+  border-radius:12px;
+  padding:28px;
+  display:flex;align-items:center;gap:24px;
+  margin-bottom:40px;
+}
+.edu-icon{
+  width:56px;height:56px;border-radius:12px;
+  background:linear-gradient(135deg,var(--purple),rgba(123,47,255,0.3));
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.6rem;flex-shrink:0;
+}
+.edu-info h3{font-family:'Orbitron',sans-serif;font-size:1rem;font-weight:700;color:#fff;margin-bottom:4px}
+.edu-info p{font-size:0.9rem;color:var(--muted)}
+.edu-info .edu-grade{color:var(--green);font-family:'Share Tech Mono',monospace;font-size:0.85rem;margin-top:4px}
+
+/* ── CONTACT ── */
+#contact{
+  background:var(--bg);
+  text-align:center;
+}
+.contact-glow{
+  display:inline-block;
+  margin:0 auto 48px;
+  padding:2px;
+  border-radius:16px;
+  background:linear-gradient(135deg,var(--cyan),var(--purple),var(--green));
+}
+.contact-inner{
+  background:var(--bg);
+  border-radius:14px;
+  padding:48px 64px;
+}
+.contact-sub{
+  font-size:1.1rem;color:var(--muted);
+  max-width:520px;margin:0 auto 40px;
+}
+.contact-links{
+  display:flex;gap:20px;justify-content:center;flex-wrap:wrap;
+}
+.contact-link{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:14px 28px;
+  border-radius:8px;
+  font-family:'Orbitron',sans-serif;
+  font-size:0.75rem;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;
+  transition:all 0.3s;
+}
+.cl-github{border:1px solid rgba(255,255,255,0.1);color:var(--text);background:rgba(255,255,255,0.03)}
+.cl-github:hover{border-color:var(--text);background:rgba(255,255,255,0.08);color:#fff;transform:translateY(-3px)}
+.cl-linkedin{border:1px solid rgba(0,120,212,0.4);color:#0a8fd0;background:rgba(0,120,212,0.05)}
+.cl-linkedin:hover{border-color:#0a8fd0;background:rgba(0,120,212,0.12);transform:translateY(-3px)}
+.cl-email{background:var(--cyan);color:var(--bg);box-shadow:var(--glow-c)}
+.cl-email:hover{background:#00eeff;box-shadow:0 0 40px rgba(0,212,255,0.7);transform:translateY(-3px)}
+
+/* ── FOOTER ── */
+footer{
+  background:var(--bg2);
+  border-top:1px solid var(--border);
+  padding:24px 8%;
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:'Share Tech Mono',monospace;
+  font-size:0.75rem;color:var(--muted);
+}
+footer span{color:var(--cyan)}
+
+/* ── SCROLL ANIMATIONS ── */
+.fade-in{opacity:0;transform:translateY(30px);transition:opacity 0.6s,transform 0.6s}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  nav{padding:14px 20px}
+  .nav-links{display:none}
+  section{padding:80px 6%}
+  .about-grid{grid-template-columns:1fr}
+  .hero-stats{gap:24px}
+  .stat-num{font-size:1.5rem}
+  .proj-grid{grid-template-columns:1fr}
+  .competencies{grid-template-columns:1fr}
+  .contact-inner{padding:32px 24px}
+  footer{flex-direction:column;gap:8px;text-align:center}
+}
+
+/* ── 3D CARD TILT ── */
+.proj-card{transform-style:preserve-3d;will-change:transform}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">BASHA<span>.</span>AI</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#certs">Certs</a></li>
+  </ul>
+  <a href="mailto:mahaboobbashadudekula3@gmail.com" class="nav-cta">Hire Me</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <canvas id="heroCanvas"></canvas>
+  <div class="hero-content">
+    <div class="hero-badge">◉ AVAILABLE FOR OPPORTUNITIES</div>
+    <div class="hero-name">
+      <div class="glitch" data-text="MAHABOOBBASHA">MAHABOOBBASHA</div><br>
+      <div class="glitch" data-text="DUDEKULA">DUDEKULA</div>
+    </div>
+    <div class="hero-typerow">
+      <span class="prompt">~/ai$</span>
+      <span id="typeText"></span><span class="cursor"></span>
+    </div>
+    <p class="hero-sub">Engineering the future with Gen AI, LLMs, and high-performance inferencing.<br>AMD · IBM · AWS · LangGraph · vLLM · Multi-Agent Systems</p>
+    <div class="hero-btns">
+      <a href="#projects" class="btn btn-primary">⚡ View Projects</a>
+      <a href="#contact" class="btn btn-outline">◎ Contact Me</a>
+      <a href="resume.md" class="btn btn-ghost">↓ Resume</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><span class="stat-num">4+</span><span class="stat-label">Years Exp</span></div>
+      <div class="stat"><span class="stat-num">15+</span><span class="stat-label">Projects</span></div>
+      <div class="stat"><span class="stat-num">7</span><span class="stat-label">Certifications</span></div>
+      <div class="stat"><span class="stat-num">2</span><span class="stat-label">Major Clients</span></div>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span class="scroll-txt">SCROLL</span>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-header fade-in">
+    <div class="section-tag">// 01 — WHO I AM</div>
+    <h2 class="section-title">ABOUT <span>ME</span><span class="section-line"></span></h2>
+  </div>
+  <div class="about-grid">
+    <div class="avatar-col fade-in">
+      <div class="avatar-ring">
+        <img src="photo.jpg" alt="Mahaboobbasha Dudekula" class="avatar-img">
+      </div>
+      <div>
+        <div class="avatar-name">Basha</div>
+        <div class="avatar-title">AI Engineer</div>
+      </div>
+      <div class="avatar-status">Available</div>
+    </div>
+    <div class="fade-in">
+      <p class="about-text">
+        I'm a <strong>Full-Stack AI Engineer</strong> based in Bengaluru, India, with 4+ years building cutting-edge AI solutions for enterprise clients. At <strong>Infobell IT</strong>, I serve as a Senior Software Engineer deployed across <strong>AMD and IBM</strong> — two of the world's most demanding hardware and cloud environments.
+      </p>
+      <p class="about-text">
+        My work spans the full AI stack — from <strong>RAG pipelines and multi-agent orchestration</strong> to <strong>GPU cluster benchmarking</strong> on NVIDIA H100, AMD MI300, and Intel Gaudi3. I architect solutions that bridge cutting-edge AI research with enterprise-scale production deployment.
+      </p>
+      <p class="about-text">
+        Beyond client work, I build <strong>MLOps pipelines on AWS, voice agents, automation workflows</strong>, and serverless AI applications — constantly pushing what's possible.
+      </p>
+      <div class="about-links">
+        <a href="https://github.com/Dudekulabasha03" target="_blank" class="link-chip">⌥ GitHub</a>
+        <a href="https://linkedin.com/in/bashadude" target="_blank" class="link-chip">in LinkedIn</a>
+        <a href="mailto:mahaboobbashadudekula3@gmail.com" class="link-chip">@ Email</a>
+      </div>
+    </div>
+    <div class="fade-in">
+      <div class="competencies">
+        <div class="comp-item"><div class="comp-dot"></div>Generative AI & LLM Engineering</div>
+        <div class="comp-item"><div class="comp-dot"></div>RAG & Agentic AI Workflows</div>
+        <div class="comp-item"><div class="comp-dot"></div>AI Benchmarking & Optimization</div>
+        <div class="comp-item"><div class="comp-dot"></div>Cloud-Native AI Deployments</div>
+        <div class="comp-item"><div class="comp-dot"></div>GPU/Accelerator Performance</div>
+        <div class="comp-item"><div class="comp-dot"></div>Big Data & Distributed Systems</div>
+        <div class="comp-item"><div class="comp-dot"></div>Vector Search & Semantic AI</div>
+        <div class="comp-item"><div class="comp-dot"></div>Multi-Modal AI Applications</div>
+        <div class="comp-item"><div class="comp-dot"></div>MLOps & Pipeline Automation</div>
+        <div class="comp-item"><div class="comp-dot"></div>AI-Driven Root Cause Analysis</div>
+        <div class="comp-item"><div class="comp-dot"></div>Workflow Orchestration</div>
+        <div class="comp-item"><div class="comp-dot"></div>Conversational AI Systems</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-header fade-in">
+    <div class="section-tag">// 02 — TECH STACK</div>
+    <h2 class="section-title">TECHNICAL <span>SKILLS</span><span class="section-line"></span></h2>
+  </div>
+  <div class="skills-grid fade-in">
+    <div class="skill-category">
+      <div class="skill-cat-name">⚡ Gen AI & LLMs</div>
+      <div class="skill-tags">
+        <span class="tag tag-c">LangChain</span><span class="tag tag-c">LangGraph</span>
+        <span class="tag tag-c">RAG</span><span class="tag tag-c">Agentic RAG</span>
+        <span class="tag tag-c">vLLM</span><span class="tag tag-c">TGI</span>
+        <span class="tag tag-c">llama.cpp</span><span class="tag tag-c">Ollama</span>
+        <span class="tag tag-c">MCP Servers</span><span class="tag tag-c">CrewAI</span>
+        <span class="tag tag-c">LLaMA 2/3/3.1/3.2</span><span class="tag tag-c">Granite LLM</span>
+        <span class="tag tag-c">OpenAI</span><span class="tag tag-c">Gemini</span>
+        <span class="tag tag-c">ReAct</span><span class="tag tag-c">Chain-of-Thought</span>
+      </div>
+    </div>
+    <div class="skill-category">
+      <div class="skill-cat-name">☁ Cloud & MLOps</div>
+      <div class="skill-tags">
+        <span class="tag tag-g">AWS Bedrock</span><span class="tag tag-g">SageMaker</span>
+        <span class="tag tag-g">Lambda</span><span class="tag tag-g">API Gateway</span>
+        <span class="tag tag-g">EC2 · S3 · DynamoDB</span><span class="tag tag-g">Aurora</span>
+        <span class="tag tag-g">OpenSearch</span><span class="tag tag-g">IBM Cloud</span>
+        <span class="tag tag-g">MLflow</span><span class="tag tag-g">FastAPI</span>
+        <span class="tag tag-g">Docker</span><span class="tag tag-g">Kubernetes</span>
+        <span class="tag tag-g">Slurm</span><span class="tag tag-g">Airflow</span>
+        <span class="tag tag-g">n8n</span>
+      </div>
+    </div>
+    <div class="skill-category">
+      <div class="skill-cat-name">◈ Benchmarking & Inferencing</div>
+      <div class="skill-tags">
+        <span class="tag tag-p">MLPerf</span><span class="tag tag-p">TPCx-AI</span>
+        <span class="tag tag-p">DLRM</span><span class="tag tag-p">TPC-H · TPC-DS</span>
+        <span class="tag tag-p">NVIDIA NIMs</span><span class="tag tag-p">Optimum Habana</span>
+        <span class="tag tag-p">Intel IPEX</span><span class="tag tag-p">TensorRT</span>
+        <span class="tag tag-p">Tensor Parallelism</span><span class="tag tag-p">Multi-GPU Orchestration</span>
+        <span class="tag tag-p">Spark</span><span class="tag tag-p">Presto</span><span class="tag tag-p">Hadoop</span>
+      </div>
+    </div>
+    <div class="skill-category">
+      <div class="skill-cat-name">◉ ML Frameworks & Models</div>
+      <div class="skill-tags">
+        <span class="tag tag-o">PyTorch</span><span class="tag tag-o">TensorFlow</span>
+        <span class="tag tag-o">Hugging Face</span><span class="tag tag-o">Scikit-learn</span>
+        <span class="tag tag-o">XGBoost</span><span class="tag tag-o">Random Forest</span>
+        <span class="tag tag-o">YOLO</span><span class="tag tag-o">Transformers</span>
+        <span class="tag tag-o">FAISS</span><span class="tag tag-o">Pinecone</span>
+        <span class="tag tag-o">ChromaDB</span><span class="tag tag-o">Cohere</span>
+      </div>
+    </div>
+    <div class="skill-category">
+      <div class="skill-cat-name">⊞ Hardware & Accelerators</div>
+      <div class="skill-tags">
+        <span class="tag tag-c">NVIDIA H100 (8×)</span><span class="tag tag-c">NVIDIA L4</span>
+        <span class="tag tag-c">AMD MI300 (8×)</span><span class="tag tag-c">AMD Genoa · Turin</span>
+        <span class="tag tag-c">Intel Gaudi3</span><span class="tag tag-c">Intel Cascade Lake</span>
+        <span class="tag tag-c">Intel Sapphire Rapids</span><span class="tag tag-c">OpenBMC</span>
+        <span class="tag tag-c">Dell iDRAC · HP iLO</span><span class="tag tag-c">MAAS · Bare Metal</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-header fade-in">
+    <div class="section-tag">// 03 — CAREER</div>
+    <h2 class="section-title">WORK <span>EXPERIENCE</span><span class="section-line"></span></h2>
+  </div>
+
+  <!-- AMD -->
+  <div class="exp-company">
+    <div class="company-header fade-in">
+      <div class="company-logo">IT</div>
+      <div class="company-info">
+        <h3>INFOBELL IT</h3>
+        <p>Senior Software Engineer · Client: AMD – DEAE Team</p>
+      </div>
+      <div class="company-badge">01/2022 – PRESENT</div>
+    </div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-period">02/2022 – 05/2024</div>
+        <div class="tl-title">AI/ML Benchmarking & Infrastructure Automation</div>
+        <ul class="tl-bullets">
+          <li>Executed MLPerf, LLaMA 2, TPCx-AI benchmarks on AMD Genoa and Turin CPUs; analyzed throughput, scalability, and efficiency</li>
+          <li>Automated OS installation (OpenBMC, Dell iDRAC, HP iLO, DaytonaX) via Kickstart & Cloud-Init, reducing deployment from <strong style="color:var(--cyan)">2 hours → 15 minutes</strong></li>
+          <li>Built Python + Selenium automation for BIOS/FPGA configuration and unattended OS installation workflows</li>
+          <li>Administered Canonical Ubuntu MAAS (Metal as a Service) for server provisioning on Baremetal clusters</li>
+          <li>Designed ScaleBench AI: scalable LLM benchmarking tool supporting vLLM, TGI, Ollama, LlamaCPP with automated latency, throughput & TTFT evaluation</li>
+        </ul>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-period">11/2023 – PRESENT</div>
+        <div class="tl-title">Applied Generative AI Engineering</div>
+        <ul class="tl-bullets">
+          <li>Built ConvoGene RAG chatbot (OpenAI + LangChain) with hybrid retrieval (semantic + keyword), secure auth, and observability monitoring for AMD teams querying private PDFs</li>
+          <li>Developed EPP Agent: NLP-driven MongoDB data fetching via LangGraph with MCP servers enforcing entitlement-based access control</li>
+          <li>Engineered multi-agent RCA Troubleshooting System (LangChain + LangGraph): Router, Executor, Log Parser, Analysis, and Metrics agents for automated root cause analysis</li>
+          <li>Engineered MCP-driven RAG pipelines with chain-of-thought reasoning for log diagnostics and benchmark orchestration automation</li>
+          <li>Built multi-modal AI chatbot integrating structured data, documents, and web sources for enterprise assistance</li>
+        </ul>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-period">01/2025 – 02/2025</div>
+        <div class="tl-title">Intelligent Document Processing</div>
+        <ul class="tl-bullets">
+          <li>Built Text Extraction engine using Google Gemini 2.5 Pro + pdf2image, converting engineering drawings into structured JSON metadata (Title, Drawing No., Material, Date)</li>
+        </ul>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-period">05/2025 – PRESENT</div>
+        <div class="tl-title">Cloud Deployment & LLM Inference Optimization</div>
+        <ul class="tl-bullets">
+          <li>Applied AWS Bedrock + SageMaker for enterprise-grade model training, fine-tuning, and deployment at scale</li>
+          <li>Delivered LLM inference pipelines on NVIDIA NIM: accelerator-aware scaling and low-latency deployment</li>
+          <li>Benchmarked LLaMA-2 70B FP8 on NVIDIA 8×H100 and AMD 8×MI300; analyzed throughput, latency, memory, and concurrency limits</li>
+          <li>Deployed Llama-2, Llama-3, Llama-3.1 via TGI & vLLM; managed multi-cluster Slurm-based Docker deployments</li>
+          <li>Led AMD Venice pre-release evaluation: LLaMA-3.2 8B Instruct via vLLM & llama.cpp; Classical ML AMD vs Intel analysis</li>
+          <li>Executed AMD Turin pre-release: TPCx-AI + DLRM benchmarks with CCD core pinning</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- IBM -->
+  <div class="exp-company">
+    <div class="company-header fade-in">
+      <div class="company-logo" style="background:linear-gradient(135deg,#1f70c1,#00d4ff)">IBM</div>
+      <div class="company-info">
+        <h3>INFOBELL IT</h3>
+        <p>Senior Software Engineer · Client: IBM – AI Performance Engineer</p>
+      </div>
+      <div class="company-badge">08/2024 – PRESENT</div>
+    </div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-period">08/2024 – PRESENT</div>
+        <div class="tl-title">Big Data Benchmarking & Optimization</div>
+        <ul class="tl-bullets">
+          <li>Benchmarked Hadoop, Hive, Spark, and Presto on AMD CPU clusters; analyzed throughput, scalability, and optimization trade-offs for enterprise-scale workloads</li>
+          <li>Benchmarked AI workloads using Hugging Face models on TPC-H and TPC-DS datasets at scale</li>
+        </ul>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-period">01/2025 – PRESENT</div>
+        <div class="tl-title">LLM Inference & Accelerator Performance Engineering</div>
+        <ul class="tl-bullets">
+          <li>Benchmarked Granite-8B and Meta LLaMA-3.2-70B across Intel Gaudi3 and NVIDIA H100; optimized throughput, latency, and memory footprint</li>
+          <li>Leveraged Optimum Habana, Hugging Face Transformers, and vLLM for quantization, mixed-precision inference, and accelerator-aware fine-tuning</li>
+          <li>Conducted comparative studies: Gaudi3 vs NVIDIA H100 vs L4 GPUs with hardware-specific optimizations for large-scale enterprise AI</li>
+          <li>Deployed and evaluated LLM inference: PyTorch vs Intel IPex on Intel Cascade Lake and Sapphire Rapids systems</li>
+          <li>Designed scalable multi-backend LLM benchmarking tool (vLLM, TGI, Ollama, LlamaCPP)</li>
+        </ul>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-period">04/2025 – PRESENT</div>
+        <div class="tl-title">Applied AI Solutions on IBM Cloud</div>
+        <ul class="tl-bullets">
+          <li>Designed AI Sandbox Chatbot on IBM Cloud using Watson AI, LangChain, and Pinecone for benchmark setup, execution, and result interpretation</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-header fade-in">
+    <div class="section-tag">// 04 — PORTFOLIO</div>
+    <h2 class="section-title">FEATURED <span>PROJECTS</span><span class="section-line"></span></h2>
+  </div>
+  <div class="proj-filter fade-in">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="genai">Gen AI</button>
+    <button class="filter-btn" data-filter="mlops">MLOps</button>
+    <button class="filter-btn" data-filter="bench">Benchmarking</button>
+    <button class="filter-btn" data-filter="auto">Automation</button>
+  </div>
+  <div class="proj-grid">
+
+    <div class="proj-card" data-cat="bench">
+      <div class="proj-top">
+        <span class="proj-cat cat-bench">Benchmarking</span>
+        <a href="https://github.com/Dudekulabasha03" target="_blank" class="proj-github">⌥ GitHub</a>
+      </div>
+      <div class="proj-name">ScaleBench AI — LLM Inference Benchmarking Tool</div>
+      <div class="proj-desc">Scalable multi-backend benchmarking tool for vLLM, TGI, Ollama, and LlamaCPP. Automated latency, throughput, and TTFT evaluation with adaptive user load, dataset-based prompts, and real-time CSV visualization.</div>
+      <div class="proj-tags">
+        <span class="proj-tag">vLLM</span><span class="proj-tag">TGI</span>
+        <span class="proj-tag">Python</span><span class="proj-tag">Matplotlib</span>
+        <span class="proj-tag">REST APIs</span>
+      </div>
+    </div>
+
+    <div class="proj-card" data-cat="genai">
+      <div class="proj-top">
+        <span class="proj-cat cat-genai">Gen AI</span>
+        <a href="https://github.com/Dudekulabasha03" target="_blank" class="proj-github">⌥ GitHub</a>
+      </div>
+      <div class="proj-name">RCAgen AI — Autonomous Troubleshooting System</div>
+      <div class="proj-desc">Multi-agent RCA system using LangGraph and MCP. Planner, Executor, Analyzer, and Reporter agents autonomously coordinate benchmark execution, log diagnostics, and result summarization.</div>
+      <div class="proj-tags">
+        <span class="proj-tag">LangGraph</span><span class="proj-tag">LangChain</span>
+        <span class="proj-tag">MCP</span><span class="proj-tag">Multi-Agent</span>
+      </div>
+    </div>
+
+    <div class="proj-card" data-cat="genai">
+      <div class="proj-top">
+        <span class="proj-cat cat-genai">Gen AI</span>
+        <a href="https://github.com/Dudekulabasha03" target="_blank" class="proj-github">⌥ GitHub</a>
+      </div>
+      <div class="proj-name">ConvoGene — Production RAG Chatbot</div>
+      <div class="proj-desc">Enterprise RAG chatbot with hybrid retrieval (semantic + keyword), secure user authentication, observability/monitoring, and latency optimization. Enables AMD teams to query private PDFs and architecture docs.</div>
+      <div class="proj-tags">
+        <span class="proj-tag">LangChain</span><span class="proj-tag">OpenAI</span>
+        <span class="proj-tag">RAG</span><span class="proj-tag">Streamlit</span>
+        <span class="proj-tag">Cohere</span>
+      </div>
+    </div>
+
+    <div class="proj-card" data-cat="bench">
+      <div class="proj-top">
+        <span class="proj-cat cat-bench">Benchmarking</span>
+        <a href="https://github.com/Dudekulabasha03" target="_blank" class="proj-github">⌥ GitHub</a>
+      </div>
+      <div class="proj-name">GPU-Accelerated LLM Inference Platform</div>
+      <div class="proj-desc">Multi-GPU LLM inference platform using vLLM, Docker, and Slurm across NVIDIA H100 and AMD MI300 clusters. Optimized model serving, scheduling, and resource utilization for high-throughput production deployment.</div>
+      <div class="proj-tags">
+        <span class="proj-tag">vLLM</span><span class="proj-tag">Docker</span>
+        <span class="proj-tag">Slurm</span><span class="proj-tag">NVIDIA H100</span>
+        <span class="proj-tag">AMD MI300</span>
+      </div>
+    </div>
+
+    <div class="proj-card" data-cat="genai">
+      <div class="proj-top">
+        <span class="proj-cat cat-genai">Gen AI</span>
+        <a href="https://github.com/Dudekulabasha03" target="_blank" class="proj-github">⌥ GitHub</a>
+      </div>
+      <div class="proj-name">EPP Agent — NLP-Driven Data Fetcher</div>
+      <div class="proj-desc">Agent for dynamic MongoDB data fetching using NLP search queries. LangGraph processes natural language across multiple parameters. MCP servers enforce entitlement-based access control for internal/external users.</div>
+      <div class="proj-tags">
+        <span class="proj-tag">LangGraph</span><span class="proj-tag">MongoDB</span>
+        <span class="proj-tag">MCP</span><span class="proj-tag">NLP</span>
+      </div>
+    </div>
+
+    <div class="proj-card" data-cat="mlops">
+      <div class="proj-top">
+        <span class="proj-cat cat-mlops">MLOps</span>
+        <a href="https://github.com/Dudekulabasha03" target="_blank" class="proj-github">⌥ GitHub</a>
+      </div>
+      <div class="proj-name">Serverless RAG Architecture — AWS</div>
+      <div class="proj-desc">Scalable serverless RAG on AWS using API Gateway, Lambda, Bedrock, OpenSearch, and S3. Titan Embeddings + Claude/Titan LLMs for semantic search, contextual Q&A, citation-based responses, and document intelligence.</div>
+      <div class="proj-tags">
+        <span class="proj-tag">AWS Bedrock</span><span class="proj-tag">OpenSearch</span>
+        <span class="proj-tag">Lambda</span><span class="proj-tag">Titan Embeddings</span>
+      </div>
+    </div>
+
+    <div class="proj-card" data-cat="mlops">
+      <div class="proj-top">
+        <span class="proj-cat cat-mlops">MLOps</span>
+        <a href="https://github.com/Dudekulabasha03" target="_blank" class="proj-github">⌥ GitHub</a>
+      </div>
+      <div class="proj-name">AI Executive Summary Agent — AWS Serverless</div>
+      <div class="proj-desc">AI-powered agent analyzing benchmark reports and generating executive insights using Amazon Bedrock Nova Pro. Multi-agent orchestration (Aggregation, Validation, Response) via API Gateway + Lambda + Aurora + S3.</div>
+      <div class="proj-tags">
+        <span class="proj-tag">Bedrock Nova Pro</span><span class="proj-tag">Lambda</span>
+        <span class="proj-tag">Aurora</span><span class="proj-tag">Multi-Agent</span>
+      </div>
+    </div>
+
+    <div class="proj-card" data-cat="bench">
+      <div class="proj-top">
+        <span class="proj-cat cat-bench">Benchmarking</span>
+        <a href="https://github.com/Dudekulabasha03" target="_blank" class="proj-github">⌥ GitHub</a>
+      </div>
+      <div class="proj-name">IBM Sandbox Playground — Model Benchmarking</div>
+      <div class="proj-desc">Benchmarked BERT, RoBERTa, LLaMA on multi-GPU setups using Intel Gaudi3 and NVIDIA H100. Tuned Spark and Presto workloads for scalable high-throughput pipelines. Delivered hardware utilization insights.</div>
+      <div class="proj-tags">
+        <span class="proj-tag">Gaudi3</span><span class="proj-tag">NVIDIA H100</span>
+        <span class="proj-tag">Spark</span><span class="proj-tag">Presto</span>
+      </div>
+    </div>
+
+    <div class="proj-card" data-cat="genai">
+      <div class="proj-top">
+        <span class="proj-cat cat-genai">Gen AI</span>
+        <a href="https://github.com/Dudekulabasha03" target="_blank" class="proj-github">⌥ GitHub</a>
+      </div>
+      <div class="proj-name">Generative AI Customer Support Bot</div>
+      <div class="proj-desc">Domain-specific RAG chatbot for product manuals and technical docs. Amazon Bedrock foundation models + S3 knowledge base. Semantic vector search via OpenSearch/FAISS, multi-turn memory, Slack/web API deployment.</div>
+      <div class="proj-tags">
+        <span class="proj-tag">AWS Bedrock</span><span class="proj-tag">FAISS</span>
+        <span class="proj-tag">LangChain</span><span class="proj-tag">Slack API</span>
+      </div>
+    </div>
+
+    <div class="proj-card" data-cat="mlops">
+      <div class="proj-top">
+        <span class="proj-cat cat-mlops">MLOps</span>
+        <a href="https://github.com/Dudekulabasha03" target="_blank" class="proj-github">⌥ GitHub</a>
+      </div>
+      <div class="proj-name">Mobile Inventory Prediction Pipeline</div>
+      <div class="proj-desc">End-to-end ML pipeline for inventory forecasting using Random Forest and XGBoost. FastAPI serving with MLflow tracking. Deployed on AWS EC2 with S3 storage, API Gateway routing, and DynamoDB for predictions.</div>
+      <div class="proj-tags">
+        <span class="proj-tag">XGBoost</span><span class="proj-tag">FastAPI</span>
+        <span class="proj-tag">MLflow</span><span class="proj-tag">AWS EC2</span>
+        <span class="proj-tag">DynamoDB</span>
+      </div>
+    </div>
+
+    <div class="proj-card" data-cat="auto">
+      <div class="proj-top">
+        <span class="proj-cat cat-auto">Automation</span>
+        <a href="https://github.com/Dudekulabasha03" target="_blank" class="proj-github">⌥ GitHub</a>
+      </div>
+      <div class="proj-name">AI Travel Assistant & Web Automation</div>
+      <div class="proj-desc">Modular travel assistant using CrewAI, ReAct, and Gradio for itinerary planning, travel tips, and currency conversions. AI-driven browser automation with Ollama, Groq, Playwright, and Google APIs for web navigation.</div>
+      <div class="proj-tags">
+        <span class="proj-tag">CrewAI</span><span class="proj-tag">Playwright</span>
+        <span class="proj-tag">Ollama</span><span class="proj-tag">Groq</span>
+        <span class="proj-tag">Gradio</span>
+      </div>
+    </div>
+
+    <div class="proj-card" data-cat="auto">
+      <div class="proj-top">
+        <span class="proj-cat cat-auto">Automation</span>
+        <a href="https://github.com/Dudekulabasha03" target="_blank" class="proj-github">⌥ GitHub</a>
+      </div>
+      <div class="proj-name">n8n AI Workflow Automation Suite</div>
+      <div class="proj-desc">Three production n8n workflows: Gemini-2 Flash web chatbot via webhooks; WhatsApp kitchen cooking assistant agent; Telegram idea-capture bot that stores in Google Sheets and triggers AI content creation agents.</div>
+      <div class="proj-tags">
+        <span class="proj-tag">n8n</span><span class="proj-tag">Gemini 2</span>
+        <span class="proj-tag">WhatsApp API</span><span class="proj-tag">Telegram</span>
+        <span class="proj-tag">Google Sheets</span>
+      </div>
+    </div>
+
+    <div class="proj-card" data-cat="genai">
+      <div class="proj-top">
+        <span class="proj-cat cat-genai">Gen AI</span>
+        <a href="https://github.com/Dudekulabasha03" target="_blank" class="proj-github">⌥ GitHub</a>
+      </div>
+      <div class="proj-name">Voice Agentic AI Assistant</div>
+      <div class="proj-desc">Voice-enabled agentic AI assistant capable of conversational task execution, dynamic responses, and multi-step reasoning through natural speech interaction.</div>
+      <div class="proj-tags">
+        <span class="proj-tag">Voice AI</span><span class="proj-tag">Agentic</span>
+        <span class="proj-tag">STT/TTS</span><span class="proj-tag">LLM</span>
+      </div>
+    </div>
+
+    <div class="proj-card" data-cat="genai">
+      <div class="proj-top">
+        <span class="proj-cat cat-genai">Gen AI</span>
+        <a href="https://github.com/Dudekulabasha03" target="_blank" class="proj-github">⌥ GitHub</a>
+      </div>
+      <div class="proj-name">AI Agent for Test Execution Validation</div>
+      <div class="proj-desc">AI agent validating Hercules test runs by cross-analyzing planning logs, test videos, and HTML/JUnit outputs. Detects skipped or altered steps by aligning agent reasoning with visual evidence for improved QA accuracy.</div>
+      <div class="proj-tags">
+        <span class="proj-tag">LangGraph</span><span class="proj-tag">Multi-Modal</span>
+        <span class="proj-tag">JUnit</span><span class="proj-tag">QA Automation</span>
+      </div>
+    </div>
+
+    <div class="proj-card" data-cat="mlops">
+      <div class="proj-top">
+        <span class="proj-cat cat-mlops">MLOps</span>
+        <a href="https://github.com/Dudekulabasha03" target="_blank" class="proj-github">⌥ GitHub</a>
+      </div>
+      <div class="proj-name">AI Order Forecasting & Compliance Platform</div>
+      <div class="proj-desc">XGBoost-based forecasting model predicting order volumes, popular devices, and peak demand. Mobile orders and inventory data from AWS S3 and Athena, trained and deployed via SageMaker.</div>
+      <div class="proj-tags">
+        <span class="proj-tag">XGBoost</span><span class="proj-tag">SageMaker</span>
+        <span class="proj-tag">AWS Athena</span><span class="proj-tag">S3</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CERTS -->
+<section id="certs">
+  <div class="section-header fade-in">
+    <div class="section-tag">// 05 — CREDENTIALS</div>
+    <h2 class="section-title">EDUCATION & <span>CERTIFICATIONS</span><span class="section-line"></span></h2>
+  </div>
+  <div class="edu-card fade-in">
+    <div class="edu-icon">🎓</div>
+    <div class="edu-info">
+      <h3>B.Tech in Computer Science & Engineering</h3>
+      <p>Madanapalle Institute of Technology & Science</p>
+      <p>May 2018 – June 2022</p>
+      <div class="edu-grade">CGPA: 8.6 / 10.0</div>
+    </div>
+  </div>
+  <div class="certs-grid">
+    <div class="cert-card">
+      <div class="cert-icon" style="background:rgba(255,153,0,0.15)">☁</div>
+      <div class="cert-info">
+        <div class="cert-name">AWS Certified Solutions Architect – Associate</div>
+        <div class="cert-org">Amazon Web Services · SAA-C03</div>
+      </div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-icon" style="background:rgba(0,212,255,0.1)">⎈</div>
+      <div class="cert-info">
+        <div class="cert-name">Certified Kubernetes Administrator</div>
+        <div class="cert-org">Linux Foundation · CKA</div>
+      </div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-icon" style="background:rgba(0,255,136,0.1)">🐧</div>
+      <div class="cert-info">
+        <div class="cert-name">Linux Foundation Certified Sys Admin</div>
+        <div class="cert-org">Linux Foundation · LFCS</div>
+      </div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-icon" style="background:rgba(255,215,0,0.1)">🐍</div>
+      <div class="cert-info">
+        <div class="cert-name">PCAP – Certified Associate in Python</div>
+        <div class="cert-org">Python Institute</div>
+      </div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-icon" style="background:rgba(255,107,53,0.1)">🤗</div>
+      <div class="cert-info">
+        <div class="cert-name">Fundamentals of Agents</div>
+        <div class="cert-org">Hugging Face · Professional Certificate</div>
+      </div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-icon" style="background:rgba(30,100,220,0.1)">◈</div>
+      <div class="cert-info">
+        <div class="cert-name">IBM RAG and Agentic AI</div>
+        <div class="cert-org">IBM · Coursera Professional Certificate</div>
+      </div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-icon" style="background:rgba(123,47,255,0.1)">⚡</div>
+      <div class="cert-info">
+        <div class="cert-name">Complete Generative AI with LangChain & HF</div>
+        <div class="cert-org">Professional Certificate</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-header fade-in">
+    <div class="section-tag">// 06 — LET'S CONNECT</div>
+    <h2 class="section-title">GET IN <span>TOUCH</span><span class="section-line"></span></h2>
+  </div>
+  <div class="contact-glow fade-in">
+    <div class="contact-inner">
+      <h3 style="font-family:'Orbitron',sans-serif;font-size:1.4rem;color:#fff;margin-bottom:12px">
+        Open to Opportunities
+      </h3>
+      <p class="contact-sub">
+        Whether it's a challenging AI engineering role, a research collaboration, or a freelance project — I'm ready to build something remarkable.
+      </p>
+      <div class="contact-links">
+        <a href="https://github.com/Dudekulabasha03" target="_blank" class="contact-link cl-github">
+          ⌥ GitHub
+        </a>
+        <a href="https://linkedin.com/in/bashadude" target="_blank" class="contact-link cl-linkedin">
+          in LinkedIn
+        </a>
+        <a href="mailto:mahaboobbashadudekula3@gmail.com" class="contact-link cl-email">
+          @ Send Email
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2025 <span>Mahaboobbasha Dudekula</span> · AI Engineer</span>
+  <span style="font-size:0.7rem">Built with <span>Three.js</span> · Futuristic AI Edition</span>
+</footer>
+
+<script>
+// ── THREE.JS NEURAL NETWORK ──────────────────────────────────────────────────
+const canvas = document.getElementById('heroCanvas');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setClearColor(0x030711, 1);
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+camera.position.z = 6;
+
+function resize() {
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+}
+resize();
+window.addEventListener('resize', resize);
+
+// Particles
+const PARTICLE_COUNT = 180;
+const positions = new Float32Array(PARTICLE_COUNT * 3);
+const velocities = [];
+const spread = 14;
+
+for (let i = 0; i < PARTICLE_COUNT; i++) {
+  positions[i*3]   = (Math.random() - 0.5) * spread;
+  positions[i*3+1] = (Math.random() - 0.5) * spread;
+  positions[i*3+2] = (Math.random() - 0.5) * 4;
+  velocities.push({
+    x: (Math.random() - 0.5) * 0.008,
+    y: (Math.random() - 0.5) * 0.008
+  });
+}
+
+const pGeo = new THREE.BufferGeometry();
+pGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+const pMat = new THREE.PointsMaterial({ color: 0x00d4ff, size: 0.06, transparent: true, opacity: 0.85 });
+const particles = new THREE.Points(pGeo, pMat);
+scene.add(particles);
+
+// Connection lines
+const lMat = new THREE.LineBasicMaterial({ color: 0x00d4ff, transparent: true, opacity: 0.12 });
+let lineSegs = null;
+let frameN = 0;
+const CONN_DIST = 2.8;
+
+function updateLines() {
+  const pos = pGeo.attributes.position.array;
+  const lp = [];
+  for (let i = 0; i < PARTICLE_COUNT; i++) {
+    for (let j = i + 1; j < PARTICLE_COUNT; j++) {
+      const dx = pos[i*3] - pos[j*3];
+      const dy = pos[i*3+1] - pos[j*3+1];
+      if (dx*dx + dy*dy < CONN_DIST*CONN_DIST) {
+        lp.push(pos[i*3], pos[i*3+1], pos[i*3+2]);
+        lp.push(pos[j*3], pos[j*3+1], pos[j*3+2]);
+      }
+    }
+  }
+  if (lineSegs) scene.remove(lineSegs);
+  if (lp.length) {
+    const lg = new THREE.BufferGeometry();
+    lg.setAttribute('position', new THREE.Float32BufferAttribute(lp, 3));
+    lineSegs = new THREE.LineSegments(lg, lMat);
+    scene.add(lineSegs);
+  }
+}
+
+// Floating wireframe geometries
+const geoConfigs = [
+  { geo: new THREE.IcosahedronGeometry(0.9, 0), color: 0x7b2fff, x: 3.5, y: 1.0, z: -1 },
+  { geo: new THREE.OctahedronGeometry(0.55, 0), color: 0x00d4ff, x: -3.0, y: -1.5, z: -0.5 },
+  { geo: new THREE.TetrahedronGeometry(0.4, 0), color: 0x00ff88, x: -2.0, y: 2.0, z: 0.5 },
+  { geo: new THREE.TorusGeometry(0.6, 0.08, 8, 20), color: 0xff6b35, x: 2.5, y: -2.0, z: 0 },
+];
+
+const floatMeshes = geoConfigs.map(cfg => {
+  const mat = new THREE.MeshBasicMaterial({ color: cfg.color, wireframe: true, transparent: true, opacity: 0.35 });
+  const mesh = new THREE.Mesh(cfg.geo, mat);
+  mesh.position.set(cfg.x, cfg.y, cfg.z);
+  scene.add(mesh);
+  return mesh;
+});
+
+// Large background sphere (robot halo)
+const haloGeo = new THREE.SphereGeometry(3.5, 12, 8);
+const haloMat = new THREE.MeshBasicMaterial({ color: 0x7b2fff, wireframe: true, transparent: true, opacity: 0.06 });
+const halo = new THREE.Mesh(haloGeo, haloMat);
+halo.position.set(2, 0, -3);
+scene.add(halo);
+
+// Mouse parallax
+let mx = 0, my = 0;
+window.addEventListener('mousemove', e => {
+  mx = (e.clientX / window.innerWidth - 0.5) * 2;
+  my = (e.clientY / window.innerHeight - 0.5) * 2;
+});
+
+const clock = new THREE.Clock();
+
+function animate() {
+  requestAnimationFrame(animate);
+  const t = clock.getElapsedTime();
+  frameN++;
+
+  // Move particles
+  const pos = pGeo.attributes.position.array;
+  for (let i = 0; i < PARTICLE_COUNT; i++) {
+    pos[i*3]   += velocities[i].x;
+    pos[i*3+1] += velocities[i].y;
+    if (Math.abs(pos[i*3])   > spread/2) velocities[i].x *= -1;
+    if (Math.abs(pos[i*3+1]) > spread/2) velocities[i].y *= -1;
+  }
+  pGeo.attributes.position.needsUpdate = true;
+
+  // Update lines every 6 frames
+  if (frameN % 6 === 0) updateLines();
+
+  // Float geometries
+  floatMeshes.forEach((m, i) => {
+    m.rotation.x = t * (0.2 + i * 0.1);
+    m.rotation.y = t * (0.3 + i * 0.15);
+    m.position.y = geoConfigs[i].y + Math.sin(t * 0.5 + i * 1.2) * 0.3;
+  });
+
+  // Halo rotation
+  halo.rotation.y = t * 0.08;
+  halo.rotation.x = t * 0.05;
+
+  // Camera parallax
+  camera.position.x += (mx * 0.4 - camera.position.x) * 0.04;
+  camera.position.y += (-my * 0.2 - camera.position.y) * 0.04;
+  camera.lookAt(scene.position);
+
+  renderer.render(scene, camera);
+}
+animate();
+updateLines();
+
+// ── TYPEWRITER ───────────────────────────────────────────────────────────────
+const roles = ['AI Engineer', 'LLM Specialist', 'Gen AI Developer', 'MLOps Engineer', 'Performance Engineer', 'RAG Architect'];
+let ri = 0, ci = 0, del = false;
+const typeEl = document.getElementById('typeText');
+
+function type() {
+  const word = roles[ri];
+  if (!del) {
+    typeEl.textContent = word.slice(0, ++ci);
+    if (ci === word.length) { del = true; setTimeout(type, 1800); return; }
+    setTimeout(type, 80);
+  } else {
+    typeEl.textContent = word.slice(0, --ci);
+    if (ci === 0) { del = false; ri = (ri + 1) % roles.length; setTimeout(type, 300); return; }
+    setTimeout(type, 40);
+  }
+}
+type();
+
+// ── SCROLL ANIMATIONS ────────────────────────────────────────────────────────
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.fade-in, .tl-item, .proj-card, .cert-card').forEach(el => observer.observe(el));
+
+// Stagger proj cards
+document.querySelectorAll('.proj-card').forEach((card, i) => {
+  card.style.transitionDelay = (i % 3) * 80 + 'ms';
+});
+
+// ── PROJECT FILTER ───────────────────────────────────────────────────────────
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const filter = btn.dataset.filter;
+    document.querySelectorAll('.proj-card').forEach(card => {
+      const show = filter === 'all' || card.dataset.cat === filter;
+      card.style.display = show ? 'flex' : 'none';
+    });
+  });
+});
+
+// ── 3D CARD TILT ─────────────────────────────────────────────────────────────
+document.querySelectorAll('.proj-card').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const rect = card.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    card.style.transform = `translateY(-6px) rotateX(${-y*8}deg) rotateY(${x*8}deg)`;
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = '';
+  });
+});
+
+// ── ACTIVE NAV ───────────────────────────────────────────────────────────────
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 200) current = s.id;
+  });
+  navLinks.forEach(a => {
+    a.style.color = a.getAttribute('href') === '#' + current ? 'var(--cyan)' : '';
+  });
+}, { passive: true });
+</script>
+</body>
+</html>
