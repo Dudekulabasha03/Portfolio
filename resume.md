@@ -86,6 +86,12 @@ Full-stack AI Engineer with 3+ years of experience in Gen AI development, LLM in
 - Conducted comparative performance analysis across GPUs and accelerators, tuning quantization, mixed precision, and memory optimization strategies for high-throughput inference
 - Built distributed LLM serving environments using Docker and GPU-aware orchestration for scalable enterprise deployment
 
+**EPDW Hub – Agentic NLP Benchmark Assistance | 2024 – Present**
+- Developed an agentic NLP-powered benchmark assistance system enabling engineers to trigger, schedule, and manage benchmarks using natural language commands
+- Agents interface directly with EPDW Tool APIs to handle benchmark scheduling, server pool management, manual data uploads, and real-time status checks
+- Embedded benchmark knowledge base into agents to provide intelligent guidance on workload selection, configuration, and result interpretation
+- Reduced benchmark setup overhead by enabling natural-language-driven orchestration across the full benchmark lifecycle
+
 **Innovation in LLM Applications**
 - Experimented with LLM-based browser navigation using Ollama and Google Gemini, enabling natural-language-driven browsing, contextual search, and knowledge extraction
 - Developed an AI Agent for Test Execution Validation that cross-analyzes Hercules planning logs, test run videos, and final HTML/JUnit outputs to detect skipped or altered execution steps and improve automated QA reliability
@@ -113,34 +119,39 @@ Full-stack AI Engineer with 3+ years of experience in Gen AI development, LLM in
 
 ### Work / Client Projects
 
-**1. ScaleBench AI – LLM Inference Benchmarking Tool | 08/2025 – Present**
+**1. EPDW Hub – Agentic NLP Benchmark Assistance | 2024 – Present**
+- Built next-generation benchmark assistant enabling natural language-driven trigger, scheduling, and management of AI/ML benchmarks via EPDW Tool APIs
+- Designed multi-agent system covering benchmark scheduling, server pool management, manual data upload, status monitoring, and knowledge-based workload guidance
+- Reduced manual benchmark coordination effort by enabling end-to-end natural language orchestration across the benchmark lifecycle
+
+**2. ScaleBench AI – LLM Inference Benchmarking Tool | 08/2025 – Present**
 - Designed and implemented a scalable tool to benchmark LLM inference performance across multiple backends including vLLM, TGI, Ollama, and LlamaCPP
 - Automated performance evaluation for latency, throughput, and TTFT with adaptive user load and dataset-based prompt generation
 - Integrated real-time visualization and CSV-based result logging for reproducible analysis and capacity planning
 
-**2. RCAgen AI – Autonomous Troubleshooting Workflows | 03/2025 – Present**
+**3. RCAgen AI – Autonomous Troubleshooting Workflows | 03/2025 – Present**
 - Engineered LangGraph and MCP workflows for automated task scheduling, benchmark analysis, RCA automation, and log diagnostics
 - Built multi-agent orchestration system where Planner, Executor, Analyzer, and Reporter agents autonomously coordinate benchmark execution, analysis, and result summarization
 
-**3. GPU-Accelerated LLM Inference & Benchmarking Platform (NVIDIA Stack & AMD MI300)**
+**4. GPU-Accelerated LLM Inference & Benchmarking Platform (NVIDIA Stack & AMD MI300)**
 - Designed and deployed a multi-GPU LLM inference platform using vLLM, Docker, and Slurm across NVIDIA GPUs and AMD MI300 accelerators
 - Optimized model serving, scheduling, and resource utilization for large-scale inference workloads, enabling high-throughput benchmarking and production-ready LLM deployment
 
-**4. AI Agent for Test Execution Validation**
+**5. AI Agent for Test Execution Validation**
 - Built an AI agent to validate Hercules test runs by cross-analyzing planning logs, test videos, and final HTML/JUnit outputs
 - Detected skipped or altered execution steps by aligning agent reasoning with visual evidence and execution results to improve automated QA accuracy
 
-**5. IBM Sandbox Playground – High-Performance Model Benchmarking | 08/2024 – Present**
+**6. IBM Sandbox Playground – High-Performance Model Benchmarking | 08/2024 – Present**
 - Benchmarked transformer models (BERT, RoBERTa, LLaMA) on multi-GPU setups using Habana Gaudi3 and NVIDIA H100 accelerators
 - Tuned Spark and Presto workloads for scalable, high-throughput benchmarking pipelines
 - Delivered actionable insights into model performance and hardware utilization
 
-**6. Generative AI Chatbot for Customer Support (AWS Bedrock, LangChain) | 05/2025 – 07/2025**
+**7. Generative AI Chatbot for Customer Support (AWS Bedrock, LangChain) | 05/2025 – 07/2025**
 - Built domain-specific RAG chatbot for querying product manuals and technical documents
 - Integrated Amazon Bedrock foundation models and Amazon S3 knowledge storage
 - Implemented semantic vector search via OpenSearch/FAISS and multi-turn memory handling, deploying the solution as a scalable API with Slack/web integration
 
-**7. RAG Chatbot with OpenAI, LangChain & Cohere | 11/2023 – 01/2025**
+**8. RAG Chatbot with OpenAI, LangChain & Cohere | 11/2023 – 01/2025**
 - Integrated OpenAI API with LangChain and Cohere to implement Retrieval-Augmented Generation (RAG) over PDFs and web content
 - Built an interactive Streamlit chatbot enabling semantic similarity search, source highlighting, and real-time responses
 
@@ -148,23 +159,23 @@ Full-stack AI Engineer with 3+ years of experience in Gen AI development, LLM in
 
 ### Freelance / MLOps Projects
 
-**8. Mobile Inventory Prediction Pipeline**
+**9. Mobile Inventory Prediction Pipeline**
 - Built an end-to-end ML data pipeline for inventory forecasting using Random Forest and XGBoost algorithms
 - Served predictions via FastAPI REST API with MLflow for experiment tracking and model versioning
 - Deployed on AWS EC2 with dataset storage on S3, API Gateway for routing, and DynamoDB for predictions storage
 
-**9. AI Executive Summary Agent (AWS Serverless)**
+**10. AI Executive Summary Agent (AWS Serverless)**
 - Built an AI-powered serverless agent on AWS to analyze benchmark reports and generate executive insights using Amazon Bedrock Nova Pro
 - Orchestrated multi-agent workflow (Aggregation, Validation, Response Agents) via API Gateway and Lambda; leveraged Aurora and S3 for scalable report processing
 
-**10. Serverless RAG Architecture on AWS**
+**11. Serverless RAG Architecture on AWS**
 - Designed scalable RAG architecture using API Gateway, Lambda, Bedrock, OpenSearch, and S3 for intelligent document ingestion and conversational AI workflows
 - Built end-to-end pipeline with Titan Embeddings and Claude/Titan LLMs enabling semantic search, contextual Q&A, and citation-based responses
 
-**11. AI-Based Order Forecasting & Compliance Intelligence Platform**
+**12. AI-Based Order Forecasting & Compliance Intelligence Platform**
 - Built an XGBoost-based forecasting model to predict order volumes, popular devices, and peak demand using mobile orders and inventory data from AWS S3 and Athena, trained in SageMaker
 
-**12. AI Travel Assistant & Web Automation Tools | 04/2025 – 05/2025**
+**13. AI Travel Assistant & Web Automation Tools | 04/2025 – 05/2025**
 - Built a modular AI-powered travel assistant integrating CrewAI, ReAct, and Gradio for itinerary planning, travel tips, and currency conversions
 - Implemented AI-driven browser automation with Ollama, Groq, Playwright, and Google APIs for natural language web navigation and form automation
 
@@ -172,16 +183,16 @@ Full-stack AI Engineer with 3+ years of experience in Gen AI development, LLM in
 
 ### Personal / Side Projects
 
-**13. n8n Workflow Automation**
+**14. n8n Workflow Automation**
 - Built a web-based AI chatbot using Gemini-2 Flash model integrated via n8n webhooks
 - Created a WhatsApp cooking assistant agent for real-time kitchen guidance use cases
 - Developed a Telegram bot that captures ideas, stores them in Google Sheets, and triggers AI agents for automatic content creation workflows
 
-**14. Website Automation**
+**15. Website Automation**
 - Business Book: Developed a ledger and accounting web application similar to KhataBook for small business financial tracking
 - Zogggy: Built a food delivery website with order management and delivery workflow automation
 
-**15. Voice Agentic AI Assistant**
+**16. Voice Agentic AI Assistant**
 - Designed and built a voice-enabled agentic AI assistant capable of conversational task execution and dynamic responses
 
 ---
