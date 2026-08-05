@@ -1,1066 +1,881 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mahaboobbasha Dudekula | 3D AI Performance Engineer Portfolio</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<style>
-:root {
-  --space-bg: #02040a;
-  --space-bg-card: rgba(10, 18, 38, 0.75);
-  --space-bg-card-hover: rgba(15, 26, 54, 0.9);
-  --cyan: #00f0ff;
-  --purple: #8a2be2;
-  --green: #00ff9d;
-  --pink: #ff007f;
-  --orange: #ff6b35;
-  --gold: #ffd700;
-  --text: #e2e8f0;
-  --muted: #64748b;
-  --border: rgba(0, 240, 255, 0.2);
-  --border-purple: rgba(138, 43, 226, 0.3);
-  --glow-c: 0 0 30px rgba(0, 240, 255, 0.5);
-  --glow-p: 0 0 30px rgba(138, 43, 226, 0.5);
-  --glow-g: 0 0 30px rgba(0, 255, 157, 0.5);
-}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Supernova — High-End Digital Agency | AI, Web & Mobile Products</title>
+  <meta name="description" content="Supernova creates premium websites, AI-powered applications, mobile apps, SaaS platforms, and UI/UX design systems for ambitious global brands.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Three.js & GSAP via CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body {
-  background-color: var(--space-bg);
-  color: var(--text);
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 16px;
-  line-height: 1.6;
-  overflow-x: hidden;
-}
-
-/* CRT Scanline Effect */
-body::after {
-  content: '';
-  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.04) 2px, rgba(0,0,0,0.04) 4px);
-  pointer-events: none; z-index: 9999;
-}
-
-a { color: var(--cyan); text-decoration: none; }
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: var(--space-bg); }
-::-webkit-scrollbar-thumb { background: linear-gradient(180deg, var(--purple), var(--cyan)); border-radius: 4px; }
-
-/* ── 3D CANVAS BACKDROP ── */
-#spaceCanvas {
-  position: fixed; top: 0; left: 0;
-  width: 100vw; height: 100vh;
-  z-index: 0;
-  pointer-events: none;
-}
-
-/* ── NAV BAR ── */
-nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-  padding: 16px 5%;
-  display: flex; align-items: center; justify-content: space-between;
-  background: rgba(2, 4, 10, 0.8);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border);
-}
-.nav-logo {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 1.1rem; font-weight: 900;
-  color: var(--cyan);
-  letter-spacing: 3px;
-  text-shadow: var(--glow-c);
-}
-.nav-logo span { color: var(--purple); }
-.nav-links { display: flex; gap: 32px; list-style: none; }
-.nav-links a {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 0.72rem; font-weight: 700;
-  color: var(--muted); letter-spacing: 2px;
-  text-transform: uppercase;
-  transition: all 0.3s;
-}
-.nav-links a:hover { color: var(--cyan); text-shadow: var(--glow-c); }
-.nav-cta {
-  padding: 8px 22px;
-  border: 1px solid var(--cyan);
-  border-radius: 4px;
-  font-family: 'Orbitron', sans-serif;
-  font-size: 0.7rem; font-weight: 700;
-  color: var(--cyan); letter-spacing: 2px;
-  text-transform: uppercase;
-  background: rgba(0, 240, 255, 0.05);
-  transition: all 0.3s;
-  box-shadow: var(--glow-c);
-}
-.nav-cta:hover { background: var(--cyan); color: var(--space-bg); box-shadow: 0 0 40px var(--cyan); }
-
-/* ── HERO SECTION ── */
-#hero {
-  position: relative;
-  min-height: 100vh;
-  display: flex; align-items: center; justify-content: flex-start;
-  padding: 120px 8% 60px;
-  z-index: 10;
-}
-.hero-content { max-width: 750px; }
-.hero-badge {
-  display: inline-flex; align-items: center; gap: 10px;
-  padding: 6px 18px;
-  border: 1px solid rgba(0, 240, 255, 0.4);
-  border-radius: 100px;
-  background: rgba(0, 240, 255, 0.08);
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 0.78rem; color: var(--cyan);
-  letter-spacing: 2px; margin-bottom: 24px;
-  box-shadow: var(--glow-c);
-}
-.hero-badge::before {
-  content: '';
-  width: 8px; height: 8px; border-radius: 50%;
-  background: var(--green);
-  box-shadow: 0 0 10px var(--green);
-  animation: pulse-dot 1.5s infinite;
-}
-@keyframes pulse-dot { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(1.5); } }
-
-.hero-name {
-  font-family: 'Orbitron', sans-serif;
-  font-size: clamp(2.4rem, 5.5vw, 4.2rem);
-  font-weight: 900; line-height: 1.1;
-  color: #fff; letter-spacing: 2px;
-  margin-bottom: 12px;
-}
-.glitch { position: relative; display: inline-block; }
-.glitch::before, .glitch::after {
-  content: attr(data-text);
-  position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0;
-}
-.glitch::before {
-  color: var(--cyan); animation: glitch-top 3.5s infinite;
-  clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
-}
-.glitch::after {
-  color: var(--purple); animation: glitch-bot 3.5s infinite;
-  clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
-}
-@keyframes glitch-top {
-  0%, 90%, 100% { transform: translateX(0); opacity: 0; }
-  92% { transform: translateX(-4px); opacity: 0.9; }
-  94% { transform: translateX(4px); opacity: 0.9; }
-  96% { transform: translateX(0); opacity: 0; }
-}
-@keyframes glitch-bot {
-  0%, 88%, 100% { transform: translateX(0); opacity: 0; }
-  91% { transform: translateX(4px); opacity: 0.9; }
-  93% { transform: translateX(-3px); opacity: 0.9; }
-  95% { transform: translateX(0); opacity: 0; }
-}
-
-.hero-typerow {
-  display: flex; align-items: center; gap: 10px;
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 1.3rem; color: var(--cyan);
-  margin: 20px 0 18px; text-shadow: var(--glow-c);
-}
-.hero-typerow .prompt { color: var(--green); }
-.cursor {
-  display: inline-block; width: 10px; height: 1.2em;
-  background: var(--cyan); animation: blink 0.8s step-end infinite;
-  vertical-align: text-bottom;
-}
-@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-
-.hero-sub {
-  font-size: 1.1rem; color: var(--muted);
-  font-weight: 400; margin-bottom: 36px; line-height: 1.6;
-}
-.hero-sub strong { color: #fff; }
-
-.hero-btns { display: flex; gap: 18px; flex-wrap: wrap; margin-bottom: 50px; }
-.btn {
-  display: inline-flex; align-items: center; gap: 10px;
-  padding: 14px 32px; border-radius: 6px;
-  font-family: 'Orbitron', sans-serif;
-  font-size: 0.78rem; font-weight: 700;
-  letter-spacing: 2px; text-transform: uppercase;
-  transition: all 0.3s; cursor: pointer;
-}
-.btn-primary { background: var(--cyan); color: var(--space-bg); box-shadow: var(--glow-c); border: none; }
-.btn-primary:hover { background: #00eeff; box-shadow: 0 0 45px rgba(0,240,255,0.8); transform: translateY(-3px); }
-.btn-outline { border: 1px solid var(--purple); color: var(--purple); background: rgba(138,43,226,0.08); }
-.btn-outline:hover { background: var(--purple); color: #fff; box-shadow: var(--glow-p); transform: translateY(-3px); }
-
-.hero-stats { display: flex; gap: 48px; }
-.stat { display: flex; flex-direction: column; }
-.stat-num {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 2.2rem; font-weight: 900;
-  color: var(--cyan); text-shadow: var(--glow-c);
-}
-.stat-label { font-size: 0.8rem; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
-
-/* ── SECTIONS ── */
-section { position: relative; z-index: 10; padding: 110px 8%; }
-.section-header { margin-bottom: 60px; }
-.section-tag {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 0.8rem; color: var(--green);
-  letter-spacing: 3px; text-transform: uppercase; margin-bottom: 8px;
-}
-.section-title {
-  font-family: 'Orbitron', sans-serif;
-  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
-  font-weight: 700; color: #fff;
-  letter-spacing: 3px; text-transform: uppercase;
-}
-.section-title span { color: var(--cyan); }
-.section-line {
-  display: block; width: 90px; height: 4px;
-  background: linear-gradient(90deg, var(--cyan), var(--purple), transparent);
-  margin-top: 12px; border-radius: 2px;
-}
-
-/* ── BENTO ABOUT ── */
-#about { background: rgba(7, 13, 26, 0.6); backdrop-filter: blur(10px); }
-.about-bento {
-  display: grid;
-  grid-template-columns: 240px 1fr 1fr;
-  gap: 30px; align-items: stretch;
-}
-@media(max-width: 990px) { .about-bento { grid-template-columns: 1fr; } }
-
-.bento-card {
-  background: var(--space-bg-card);
-  border: 1px solid var(--border);
-  border-radius: 16px; padding: 32px;
-  backdrop-filter: blur(16px);
-  position: relative; overflow: hidden;
-  transition: all 0.3s;
-}
-.bento-card:hover {
-  border-color: rgba(0, 240, 255, 0.5);
-  box-shadow: var(--glow-c);
-  transform: translateY(-4px);
-}
-
-.avatar-col { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-.avatar-ring {
-  position: relative; width: 170px; height: 170px; margin-bottom: 20px;
-}
-.avatar-ring::before {
-  content: ''; position: absolute; inset: -4px; border-radius: 50%;
-  background: linear-gradient(135deg, var(--cyan), var(--purple), var(--green), var(--cyan));
-  animation: ring-spin 4s linear infinite; z-index: 0;
-}
-@keyframes ring-spin { to { transform: rotate(360deg); } }
-.avatar-img {
-  position: relative; z-index: 2;
-  width: 164px; height: 164px; border-radius: 50%;
-  object-fit: cover; object-position: top;
-  border: 3px solid var(--space-bg);
-  display: block; margin: 3px auto 0;
-}
-.avatar-name {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 0.9rem; font-weight: 700; color: #fff; margin-bottom: 4px;
-}
-.avatar-title { font-family: 'Share Tech Mono', monospace; font-size: 0.75rem; color: var(--cyan); margin-bottom: 12px; }
-
-.competencies-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.comp-item {
-  display: flex; align-items: center; gap: 10px;
-  padding: 12px 14px; background: rgba(0, 240, 255, 0.04);
-  border: 1px solid var(--border); border-radius: 8px;
-  font-size: 0.85rem; font-weight: 500;
-  transition: all 0.3s;
-}
-.comp-item:hover { background: rgba(0, 240, 255, 0.1); border-color: var(--cyan); }
-.comp-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 8px var(--cyan); flex-shrink: 0; }
-
-/* ── SKILLS ── */
-#skills { background: var(--space-bg); }
-.skills-grid { display: flex; flex-direction: column; gap: 28px; }
-.skill-category {
-  background: var(--space-bg-card);
-  border: 1px solid var(--border);
-  border-radius: 14px; padding: 26px 32px;
-  position: relative; overflow: hidden;
-  transition: all 0.3s;
-}
-.skill-category::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-  background: linear-gradient(90deg, transparent, var(--cyan), var(--purple), transparent);
-}
-.skill-category:hover { border-color: rgba(0, 240, 255, 0.5); box-shadow: var(--glow-c); }
-.skill-cat-name {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 0.8rem; font-weight: 700; color: var(--cyan);
-  letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px;
-}
-.skill-tags { display: flex; flex-wrap: wrap; gap: 10px; }
-.tag {
-  padding: 6px 16px; border-radius: 6px;
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 0.8rem; transition: all 0.25s;
-}
-.tag-c { background: rgba(0, 240, 255, 0.08); border: 1px solid rgba(0, 240, 255, 0.3); color: var(--cyan); }
-.tag-p { background: rgba(138, 43, 226, 0.08); border: 1px solid rgba(138, 43, 226, 0.3); color: #c084fc; }
-.tag-g { background: rgba(0, 255, 157, 0.08); border: 1px solid rgba(0, 255, 157, 0.3); color: var(--green); }
-.tag-o { background: rgba(255, 107, 53, 0.08); border: 1px solid rgba(255, 107, 53, 0.3); color: var(--orange); }
-.tag:hover { transform: translateY(-3px); filter: brightness(1.3); }
-
-/* ── EXPERIENCE TIMELINE ── */
-#experience { background: rgba(7, 13, 26, 0.7); backdrop-filter: blur(10px); }
-.exp-company { margin-bottom: 60px; }
-.company-header {
-  display: flex; align-items: center; gap: 18px;
-  padding: 22px 32px;
-  background: linear-gradient(135deg, rgba(138,43,226,0.15), rgba(0,240,255,0.08));
-  border: 1px solid rgba(138,43,226,0.4);
-  border-radius: 14px; margin-bottom: 36px;
-}
-.company-logo {
-  width: 52px; height: 52px; border-radius: 10px;
-  display: flex; align-items: center; justify-content: center;
-  font-family: 'Orbitron', sans-serif;
-  font-size: 1.1rem; font-weight: 900;
-  background: linear-gradient(135deg, var(--purple), var(--cyan));
-  color: #fff; flex-shrink: 0; box-shadow: var(--glow-p);
-}
-.company-info h3 { font-family: 'Orbitron', sans-serif; font-size: 1.05rem; font-weight: 700; color: #fff; letter-spacing: 2px; }
-.company-info p { font-size: 0.88rem; color: var(--muted); }
-.company-badge {
-  margin-left: auto; padding: 6px 18px;
-  border: 1px solid var(--green); border-radius: 100px;
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 0.75rem; color: var(--green); letter-spacing: 1px;
-}
-
-.timeline { position: relative; padding-left: 36px; }
-.timeline::before {
-  content: ''; position: absolute; left: 8px; top: 0; bottom: 0; width: 2px;
-  background: linear-gradient(180deg, var(--cyan), var(--purple), rgba(138,43,226,0.2));
-}
-.tl-item { position: relative; margin-bottom: 40px; }
-.tl-dot {
-  position: absolute; left: -34px; top: 6px;
-  width: 16px; height: 16px; border-radius: 50%;
-  background: var(--space-bg); border: 2px solid var(--cyan);
-  box-shadow: 0 0 14px var(--cyan);
-}
-.tl-period { font-family: 'Share Tech Mono', monospace; font-size: 0.75rem; color: var(--cyan); letter-spacing: 1px; margin-bottom: 6px; }
-.tl-title { font-family: 'Orbitron', sans-serif; font-size: 0.95rem; font-weight: 700; color: #fff; letter-spacing: 1px; margin-bottom: 14px; }
-.tl-bullets { list-style: none; display: flex; flex-direction: column; gap: 8px; }
-.tl-bullets li { font-size: 0.95rem; color: var(--muted); padding-left: 20px; position: relative; line-height: 1.6; }
-.tl-bullets li::before { content: '▸'; position: absolute; left: 0; color: var(--cyan); }
-.tl-bullets li strong { color: #fff; }
-
-/* ── FEATURED PROJECTS ── */
-#projects { background: var(--space-bg); }
-.proj-filter { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 44px; }
-.filter-btn {
-  padding: 8px 22px; border: 1px solid var(--border);
-  border-radius: 100px; background: transparent;
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 0.8rem; color: var(--muted);
-  cursor: pointer; transition: all 0.3s;
-}
-.filter-btn:hover, .filter-btn.active {
-  border-color: var(--cyan); color: var(--cyan);
-  background: rgba(0, 240, 255, 0.1); box-shadow: var(--glow-c);
-}
-
-.proj-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 28px;
-}
-.proj-card {
-  background: var(--space-bg-card);
-  border: 1px solid var(--border);
-  border-radius: 16px; padding: 30px;
-  position: relative; overflow: hidden;
-  display: flex; flex-direction: column;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  transform-style: preserve-3d;
-}
-.proj-card::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-  background: linear-gradient(90deg, transparent, var(--cyan), var(--purple), transparent);
-  opacity: 0; transition: opacity 0.3s;
-}
-.proj-card:hover {
-  border-color: rgba(0, 240, 255, 0.6);
-  box-shadow: var(--glow-c);
-  transform: translateY(-8px) scale(1.01);
-}
-.proj-card:hover::before { opacity: 1; }
-
-.proj-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; }
-.proj-cat {
-  padding: 4px 12px; border-radius: 4px;
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 0.7rem; letter-spacing: 1px; text-transform: uppercase;
-}
-.cat-genai { background: rgba(0, 240, 255, 0.12); border: 1px solid rgba(0, 240, 255, 0.4); color: var(--cyan); }
-.cat-bench { background: rgba(138, 43, 226, 0.15); border: 1px solid rgba(138, 43, 226, 0.4); color: #c084fc; }
-.cat-mlops { background: rgba(0, 255, 157, 0.12); border: 1px solid rgba(0, 255, 157, 0.4); color: var(--green); }
-.cat-auto { background: rgba(255, 107, 53, 0.12); border: 1px solid rgba(255, 107, 53, 0.4); color: var(--orange); }
-
-.proj-github {
-  display: flex; align-items: center; gap: 6px;
-  padding: 4px 12px; border: 1px solid var(--border);
-  border-radius: 4px; font-family: 'Share Tech Mono', monospace;
-  font-size: 0.72rem; color: var(--muted); transition: all 0.3s;
-}
-.proj-github:hover { border-color: var(--cyan); color: var(--cyan); }
-.proj-name {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 1rem; font-weight: 700; color: #fff;
-  letter-spacing: 1px; margin-bottom: 12px; line-height: 1.4;
-}
-.proj-desc { font-size: 0.92rem; color: var(--muted); line-height: 1.7; margin-bottom: 20px; flex: 1; }
-.proj-tags { display: flex; flex-wrap: wrap; gap: 8px; }
-.proj-tag {
-  padding: 4px 10px; border-radius: 4px;
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 0.72rem; background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08); color: var(--muted);
-}
-
-/* ── CERTS ── */
-#certs { background: rgba(7, 13, 26, 0.7); backdrop-filter: blur(10px); }
-.edu-card {
-  background: var(--space-bg-card);
-  border: 1px solid rgba(138, 43, 226, 0.4);
-  border-radius: 16px; padding: 32px;
-  display: flex; align-items: center; gap: 28px;
-  margin-bottom: 44px;
-}
-.edu-icon {
-  width: 64px; height: 64px; border-radius: 14px;
-  background: linear-gradient(135deg, var(--purple), rgba(138,43,226,0.3));
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.8rem; flex-shrink: 0; box-shadow: var(--glow-p);
-}
-.edu-info h3 { font-family: 'Orbitron', sans-serif; font-size: 1.1rem; font-weight: 700; color: #fff; margin-bottom: 6px; }
-.edu-info p { font-size: 0.95rem; color: var(--muted); }
-.edu-grade { color: var(--green); font-family: 'Share Tech Mono', monospace; font-size: 0.9rem; margin-top: 6px; }
-
-.certs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
-.cert-card {
-  display: flex; align-items: center; gap: 16px;
-  padding: 20px 24px; background: var(--space-bg-card);
-  border: 1px solid var(--border); border-radius: 12px;
-  transition: all 0.3s;
-}
-.cert-card:hover { border-color: var(--green); box-shadow: var(--glow-g); transform: translateY(-3px); }
-.cert-icon {
-  width: 44px; height: 44px; border-radius: 10px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.3rem; flex-shrink: 0;
-}
-.cert-name { font-size: 0.95rem; font-weight: 600; color: #fff; line-height: 1.3; }
-.cert-org { font-family: 'Share Tech Mono', monospace; font-size: 0.72rem; color: var(--muted); margin-top: 3px; }
-
-/* ── CONTACT ── */
-#contact { background: var(--space-bg); text-align: center; }
-.contact-box {
-  display: inline-block; margin: 0 auto; padding: 2px;
-  border-radius: 20px;
-  background: linear-gradient(135deg, var(--cyan), var(--purple), var(--green));
-  box-shadow: var(--glow-c);
-}
-.contact-inner {
-  background: var(--space-bg); border-radius: 18px;
-  padding: 54px 72px; max-width: 650px;
-}
-.contact-title { font-family: 'Orbitron', sans-serif; font-size: 1.6rem; color: #fff; margin-bottom: 14px; }
-.contact-sub { font-size: 1.1rem; color: var(--muted); margin-bottom: 40px; }
-.contact-links { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
-.contact-btn {
-  display: inline-flex; align-items: center; gap: 10px;
-  padding: 14px 30px; border-radius: 8px;
-  font-family: 'Orbitron', sans-serif; font-size: 0.78rem; font-weight: 700;
-  letter-spacing: 2px; text-transform: uppercase; transition: all 0.3s;
-}
-.cb-github { border: 1px solid rgba(255,255,255,0.2); color: #fff; background: rgba(255,255,255,0.05); }
-.cb-github:hover { border-color: #fff; background: rgba(255,255,255,0.15); transform: translateY(-3px); }
-.cb-linkedin { border: 1px solid rgba(0,120,212,0.5); color: #0a8fd0; background: rgba(0,120,212,0.1); }
-.cb-linkedin:hover { border-color: #0a8fd0; background: rgba(0,120,212,0.2); transform: translateY(-3px); }
-.cb-email { background: var(--cyan); color: var(--space-bg); box-shadow: var(--glow-c); border: none; }
-.cb-email:hover { background: #00eeff; box-shadow: 0 0 45px rgba(0,240,255,0.8); transform: translateY(-3px); }
-
-/* FOOTER */
-footer {
-  background: rgba(2, 4, 10, 0.95);
-  border-top: 1px solid var(--border);
-  padding: 28px 8%;
-  display: flex; justify-content: space-between; align-items: center;
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 0.78rem; color: var(--muted);
-}
-footer span { color: var(--cyan); }
-</style>
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- 3D CANVAS BACKGROUND -->
-<canvas id="spaceCanvas"></canvas>
-
-<!-- NAVIGATION -->
-<nav>
-  <div class="nav-logo">BASHA<span>.</span>AI</div>
-  <ul class="nav-links">
-    <li><a href="#about">About</a></li>
-    <li><a href="#skills">Skills</a></li>
-    <li><a href="#experience">Experience</a></li>
-    <li><a href="#projects">Projects</a></li>
-    <li><a href="#certs">Certs</a></li>
-  </ul>
-  <a href="mailto:mahaboobbashadudekula3@gmail.com" class="nav-cta">Hire Me</a>
-</nav>
-
-<!-- HERO -->
-<section id="hero">
-  <div class="hero-content">
-    <div class="hero-badge">◉ 3D SPACE AI PERFORMANCE ENGINEER</div>
-    <div class="hero-name">
-      <div class="glitch" data-text="MAHABOOBBASHA">MAHABOOBBASHA</div><br>
-      <div class="glitch" data-text="DUDEKULA">DUDEKULA</div>
-    </div>
-    <div class="hero-typerow">
-      <span class="prompt">~/ai$</span>
-      <span id="typeText"></span><span class="cursor"></span>
-    </div>
-    <p class="hero-sub">
-      Engineering the future with <strong>AI benchmarking, LLMs, and high-performance inferencing</strong>.<br>
-      Multifonds · AMD · IBM · VTune · Nsight · PyTorch · ONNX · MLPerf
-    </p>
-    <div class="hero-btns">
-      <a href="#projects" class="btn btn-primary">⚡ View Projects</a>
-      <a href="#contact" class="btn btn-outline">◎ Contact Me</a>
-    </div>
-    <div class="hero-stats">
-      <div class="stat"><span class="stat-num">4+</span><span class="stat-label">Years Exp</span></div>
-      <div class="stat"><span class="stat-num">15+</span><span class="stat-label">Projects</span></div>
-      <div class="stat"><span class="stat-num">7</span><span class="stat-label">Certifications</span></div>
-      <div class="stat"><span class="stat-num">3</span><span class="stat-label">Major Clients</span></div>
-    </div>
-  </div>
-  <div class="hero-scroll">
-    <div class="scroll-line"></div>
-    <span class="scroll-txt">SCROLL</span>
-  </div>
-</section>
-
-<!-- ABOUT BENTO -->
-<section id="about">
-  <div class="section-header">
-    <div class="section-tag">// 01 — WHO I AM</div>
-    <h2 class="section-title">ABOUT <span>ME</span><span class="section-line"></span></h2>
-  </div>
-  <div class="about-bento">
-    <div class="bento-card avatar-col">
-      <div class="avatar-ring">
-        <img src="photo.png" alt="Mahaboobbasha Dudekula" class="avatar-img">
-      </div>
-      <div class="avatar-name">Mahaboobbasha Dudekula</div>
-      <div class="avatar-title">AI Performance Engineer</div>
-      <div class="avatar-status">Available</div>
-    </div>
-    <div class="bento-card">
-      <p class="about-text">
-        I'm an <strong>AI Performance Engineer & Full-Stack AI Engineer</strong> based in Bengaluru, India, with 4+ years building cutting-edge AI solutions for enterprise clients. Currently at <strong>Multifonds</strong>, and previously at <strong>Infobell IT</strong> deployed across <strong>AMD and IBM</strong>.
-      </p>
-      <p class="about-text">
-        My work spans the full AI stack — from <strong>AI benchmarking &amp; inference optimization</strong> (latency, throughput/FPS, power efficiency) to <strong>GPU/CPU cluster profiling</strong> on NVIDIA H100, AMD MI300, and Intel Gaudi3 using <strong>VTune, Nsight, and Linux perf</strong> across AMD, NVIDIA, and Qualcomm platforms.
-      </p>
-      <div class="about-links" style="margin-top:20px;">
-        <a href="https://github.com/Dudekulabasha03" target="_blank" class="link-chip">⌥ GitHub</a>
-        <a href="https://linkedin.com/in/bashadude" target="_blank" class="link-chip">in LinkedIn</a>
-        <a href="mailto:mahaboobbashadudekula3@gmail.com" class="link-chip">@ Email</a>
-      </div>
-    </div>
-    <div class="bento-card">
-      <h3 style="font-family:'Orbitron',sans-serif;font-size:0.95rem;color:#fff;margin-bottom:18px;">CORE COMPETENCIES</h3>
-      <div class="competencies-grid">
-        <div class="comp-item"><div class="comp-dot"></div>AI Benchmarking</div>
-        <div class="comp-item"><div class="comp-dot"></div>CPU/GPU/NPU Profiling</div>
-        <div class="comp-item"><div class="comp-dot"></div>VTune / Nsight / perf</div>
-        <div class="comp-item"><div class="comp-dot"></div>PyTorch & ONNX</div>
-        <div class="comp-item"><div class="comp-dot"></div>MLPerf Benchmarking</div>
-        <div class="comp-item"><div class="comp-dot"></div>Competitive Analysis</div>
-        <div class="comp-item"><div class="comp-dot"></div>Gen AI & LLM Eng</div>
-        <div class="comp-item"><div class="comp-dot"></div>RAG & Agentic Workflows</div>
-        <div class="comp-item"><div class="comp-dot"></div>Inference Optimization</div>
-        <div class="comp-item"><div class="comp-dot"></div>Python & C/C++ Automation</div>
-        <div class="comp-item"><div class="comp-dot"></div>Linux Systems Tuning</div>
-        <div class="comp-item"><div class="comp-dot"></div>Multi-Agent Systems</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- SKILLS -->
-<section id="skills">
-  <div class="section-header">
-    <div class="section-tag">// 02 — TECH STACK</div>
-    <h2 class="section-title">TECHNICAL <span>SKILLS</span><span class="section-line"></span></h2>
-  </div>
-  <div class="skills-grid">
-    <div class="skill-category">
-      <div class="skill-cat-name">🔬 Profiling & Performance Tools</div>
-      <div class="skill-tags">
-        <span class="tag tag-p">Intel VTune Profiler</span><span class="tag tag-p">NVIDIA Nsight Systems</span>
-        <span class="tag tag-p">NVIDIA Nsight Compute</span><span class="tag tag-p">Linux perf</span>
-        <span class="tag tag-p">PyTorch Profiler</span><span class="tag tag-p">ONNX Runtime</span>
-        <span class="tag tag-p">TensorRT</span><span class="tag tag-p">Latency Analysis</span>
-        <span class="tag tag-p">Throughput / FPS</span><span class="tag tag-p">Power Efficiency</span>
-        <span class="tag tag-p">Memory Bandwidth</span><span class="tag tag-p">Bottleneck Analysis</span>
-      </div>
-    </div>
-    <div class="skill-category">
-      <div class="skill-cat-name">⊞ Hardware & Accelerators</div>
-      <div class="skill-tags">
-        <span class="tag tag-c">NVIDIA H100 (8×)</span><span class="tag tag-c">NVIDIA L4</span>
-        <span class="tag tag-c">AMD MI300 (8×)</span><span class="tag tag-c">AMD Genoa · Turin · Venice</span>
-        <span class="tag tag-c">Intel Gaudi3</span><span class="tag tag-c">Intel Cascade Lake</span>
-        <span class="tag tag-c">Intel Sapphire Rapids</span><span class="tag tag-c">Qualcomm NPUs</span>
-        <span class="tag tag-c">OpenBMC</span><span class="tag tag-c">Dell iDRAC · HP iLO</span><span class="tag tag-c">MAAS</span>
-      </div>
-    </div>
-    <div class="skill-category">
-      <div class="skill-cat-name">⚡ Gen AI & LLMs</div>
-      <div class="skill-tags">
-        <span class="tag tag-c">LangChain</span><span class="tag tag-c">LangGraph</span>
-        <span class="tag tag-c">RAG</span><span class="tag tag-c">Agentic RAG</span>
-        <span class="tag tag-c">vLLM</span><span class="tag tag-c">TGI</span>
-        <span class="tag tag-c">llama.cpp</span><span class="tag tag-c">Ollama</span>
-        <span class="tag tag-c">MCP Servers</span><span class="tag tag-c">CrewAI</span>
-        <span class="tag tag-c">LLaMA 2/3/3.1/3.2</span><span class="tag tag-c">Granite LLM</span>
-        <span class="tag tag-c">OpenAI</span><span class="tag tag-c">Gemini</span>
-      </div>
-    </div>
-    <div class="skill-category">
-      <div class="skill-cat-name">☁ Cloud & MLOps</div>
-      <div class="skill-tags">
-        <span class="tag tag-g">AWS Bedrock</span><span class="tag tag-g">SageMaker</span>
-        <span class="tag tag-g">Lambda</span><span class="tag tag-g">API Gateway</span>
-        <span class="tag tag-g">EC2 · S3 · DynamoDB</span><span class="tag tag-g">Aurora</span>
-        <span class="tag tag-g">OpenSearch</span><span class="tag tag-g">IBM Cloud</span>
-        <span class="tag tag-g">MLflow</span><span class="tag tag-g">FastAPI</span>
-        <span class="tag tag-g">Docker</span><span class="tag tag-g">Kubernetes</span><span class="tag tag-g">Slurm</span>
-      </div>
-    </div>
-    <div class="skill-category">
-      <div class="skill-cat-name">💻 Languages & Systems</div>
-      <div class="skill-tags">
-        <span class="tag tag-g">Python</span><span class="tag tag-g">C</span><span class="tag tag-g">C++</span><span class="tag tag-g">Bash</span>
-        <span class="tag tag-g">SQL</span><span class="tag tag-g">Linux Internals</span>
-        <span class="tag tag-g">KVM</span><span class="tag tag-g">VMware ESXi</span><span class="tag tag-g">Hyper-V</span><span class="tag tag-g">x86 CPU Architecture</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- EXPERIENCE -->
-<section id="experience">
-  <div class="section-header">
-    <div class="section-tag">// 03 — CAREER</div>
-    <h2 class="section-title">WORK <span>EXPERIENCE</span><span class="section-line"></span></h2>
+  <!-- CUSTOM CURSOR -->
+  <div id="cursor-dot"></div>
+  <div id="cursor-ring">
+    <span id="cursor-text"></span>
   </div>
 
-  <!-- MULTIFONDS -->
-  <div class="exp-company">
-    <div class="company-header">
-      <div class="company-logo" style="background:linear-gradient(135deg,#00f0ff,#00ff9d)">MF</div>
-      <div class="company-info">
-        <h3>MULTIFONDS</h3>
-        <p>AI Performance Engineer · Benchmarking & Inference Optimization</p>
+  <!-- 3D HERO CANVAS -->
+  <canvas id="hero-canvas"></canvas>
+
+  <!-- NAVIGATION -->
+  <header>
+    <nav id="navbar">
+      <a href="#" class="nav-logo">
+        <span class="logo-icon">✦</span>
+        <span class="logo-text">SUPERNOVA</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#services">Services</a></li>
+        <li><a href="#portfolio">Work</a></li>
+        <li><a href="#process">Process</a></li>
+        <li><a href="#calculator">Calculator</a></li>
+        <li><a href="#about">About</a></li>
+      </ul>
+      <a href="#contact" class="nav-cta btn-magnetic">
+        <span>Start a Project</span>
+      </a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- HERO SECTION -->
+    <section id="hero">
+      <div class="hero-container">
+        <div class="hero-badge">
+          <span class="badge-dot"></span>
+          <span>HIGH-END DIGITAL PRODUCT STUDIO</span>
+        </div>
+        
+        <h1 class="hero-headline">
+          We Build Digital Experiences That <span class="text-gradient">Explode With Possibility.</span>
+        </h1>
+        
+        <p class="hero-subtext">
+          Supernova creates premium websites, AI-powered applications, and digital products for ambitious brands ready to grow beyond ordinary.
+        </p>
+        
+        <div class="hero-actions">
+          <a href="#contact" class="btn btn-primary btn-magnetic" data-hover-text="Let's Talk">
+            <span>Start Your Project</span>
+            <svg class="btn-arrow" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a href="#portfolio" class="btn btn-secondary btn-magnetic" data-hover-text="Explore">
+            <span>Explore Our Work</span>
+          </a>
+        </div>
+        
+        <div class="hero-trust">
+          <span class="trust-line">Trusted by ambitious founders, startups, and growing brands globally.</span>
+          <div class="trust-logos">
+            <span>AETHER AI</span>
+            <span>NOVASPHERE</span>
+            <span>QUANTUM</span>
+            <span>LUMIÈRE</span>
+            <span>APEX FIN</span>
+          </div>
+        </div>
       </div>
-      <div class="company-badge">08/2026 – PRESENT</div>
+
+      <div class="hero-scroll-indicator">
+        <div class="mouse-icon">
+          <div class="mouse-wheel"></div>
+        </div>
+        <span>SCROLL TO EXPLORE</span>
+      </div>
+    </section>
+
+    <!-- SERVICES SECTION -->
+    <section id="services">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">// WHAT WE CREATE</span>
+          <h2 class="section-title">Architecting <span class="text-gradient">The Next Generation</span> Of Digital Products</h2>
+          <p class="section-sub">We combine strategy, high-end design, and cutting-edge engineering to build market leaders.</p>
+        </div>
+
+        <div class="services-grid">
+          
+          <div class="service-card" data-tilt>
+            <div class="card-glow"></div>
+            <div class="service-icon">
+              <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+            </div>
+            <span class="service-num">01</span>
+            <h3 class="service-title">Premium Website Design</h3>
+            <p class="service-desc">Immersive, 3D-enhanced websites engineered to captivate visitors, elevate brand value, and convert at world-class rates.</p>
+            <div class="service-tags">
+              <span>Three.js</span><span>GSAP</span><span>WebGL</span><span>Tailwind</span>
+            </div>
+          </div>
+
+          <div class="service-card" data-tilt>
+            <div class="card-glow"></div>
+            <div class="service-icon">
+              <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 14a4 4 0 110-8 4 4 0 010 8z" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+            </div>
+            <span class="service-num">02</span>
+            <h3 class="service-title">AI-Powered Applications</h3>
+            <p class="service-desc">Custom LLM integrations, intelligent RAG workflows, agentic automation, and generative AI interfaces that give startups unfair advantages.</p>
+            <div class="service-tags">
+              <span>LangChain</span><span>OpenAI</span><span>vLLM</span><span>Python</span>
+            </div>
+          </div>
+
+          <div class="service-card" data-tilt>
+            <div class="card-glow"></div>
+            <div class="service-icon">
+              <svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" stroke="currentColor" stroke-width="2" fill="none"/><path d="M12 18h.01" stroke="currentColor" stroke-width="3"/></svg>
+            </div>
+            <span class="service-num">03</span>
+            <h3 class="service-title">Mobile App Development</h3>
+            <p class="service-desc">Fluid iOS and Android applications with native performance, micro-interactions, and ultra-sleek UI built for scale.</p>
+            <div class="service-tags">
+              <span>React Native</span><span>Flutter</span><span>Swift</span><span>Kotlin</span>
+            </div>
+          </div>
+
+          <div class="service-card" data-tilt>
+            <div class="card-glow"></div>
+            <div class="service-icon">
+              <svg viewBox="0 0 24 24"><path d="M18 10h-1.26A8 8 0 109 20h9a5 5 0 000-10z" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+            </div>
+            <span class="service-num">04</span>
+            <h3 class="service-title">SaaS Product Development</h3>
+            <p class="service-desc">End-to-end cloud platforms with multi-tenant architecture, automated subscription billing, and real-time data analytics.</p>
+            <div class="service-tags">
+              <span>Next.js</span><span>AWS</span><span>Stripe</span><span>PostgreSQL</span>
+            </div>
+          </div>
+
+          <div class="service-card" data-tilt>
+            <div class="card-glow"></div>
+            <div class="service-icon">
+              <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            </div>
+            <span class="service-num">05</span>
+            <h3 class="service-title">UI/UX Design Systems</h3>
+            <p class="service-desc">Scalable component libraries, design tokens, and comprehensive brand guidelines engineered for product consistency across all devices.</p>
+            <div class="service-tags">
+              <span>Figma</span><span>Design Tokens</span><span>Storybook</span><span>Shadcn</span>
+            </div>
+          </div>
+
+          <div class="service-card" data-tilt>
+            <div class="card-glow"></div>
+            <div class="service-icon">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/><path d="M12 6v6l4 2" stroke="currentColor" stroke-width="2"/></svg>
+            </div>
+            <span class="service-num">06</span>
+            <h3 class="service-title">Digital Strategy & Growth</h3>
+            <p class="service-desc">Data-driven product positioning, conversion rate optimization, and growth engineering to take your product from launch to market dominance.</p>
+            <div class="service-tags">
+              <span>CRO</span><span>Analytics</span><span>Product Scaling</span><span>SEO</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- INTERACTIVE PORTFOLIO SECTION -->
+    <section id="portfolio" class="cursor-hover-view">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">// SELECTED MISSIONS</span>
+          <h2 class="section-title">Projects Designed To <span class="text-gradient">Outshine Competitors</span></h2>
+          <p class="section-sub">Explore our recent work for ambitious founders and international brands.</p>
+        </div>
+
+        <div class="portfolio-filter">
+          <button class="filter-btn active" data-filter="all">All Missions</button>
+          <button class="filter-btn" data-filter="saas">SaaS Platform</button>
+          <button class="filter-btn" data-filter="ai">AI Application</button>
+          <button class="filter-btn" data-filter="mobile">Mobile App</button>
+          <button class="filter-btn" data-filter="fintech">Fintech</button>
+          <button class="filter-btn" data-filter="luxury">Luxury Brand</button>
+        </div>
+
+        <div class="portfolio-grid">
+
+          <!-- Project 1 -->
+          <div class="project-card" data-category="saas" data-tilt>
+            <div class="project-image-wrap">
+              <div class="project-mockup mockup-aether">
+                <div class="mockup-ui">
+                  <div class="mockup-nav">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="url">aether.ai/dashboard</span>
+                  </div>
+                  <div class="mockup-body">
+                    <div class="mockup-header">
+                      <div class="bar bar-lg"></div>
+                      <div class="badge-pill">+340% ARR</div>
+                    </div>
+                    <div class="mockup-graph">
+                      <svg class="graph-svg" viewBox="0 0 300 100">
+                        <path d="M0,80 Q75,20 150,50 T300,10" fill="none" stroke="var(--cyan)" stroke-width="3"/>
+                        <path d="M0,80 Q75,20 150,50 T300,10 L300,100 L0,100 Z" fill="url(#gradCyan)" opacity="0.2"/>
+                        <defs>
+                          <linearGradient id="gradCyan" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--cyan)"/><stop offset="100%" stop-color="transparent"/></linearGradient>
+                        </defs>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="project-info">
+              <div class="project-meta">
+                <span class="project-cat">SaaS Platform</span>
+                <span class="project-result">3.4x Revenue Growth</span>
+              </div>
+              <h3 class="project-name">Aether AI — Enterprise Automation Engine</h3>
+              <p class="project-desc">A next-generation SaaS workspace integrating autonomous AI agents and workflow orchestration for enterprise teams.</p>
+              <div class="project-action">
+                <span>View Mission</span>
+                <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- Project 2 -->
+          <div class="project-card" data-category="ai" data-tilt>
+            <div class="project-image-wrap">
+              <div class="project-mockup mockup-novasphere">
+                <div class="mockup-ui">
+                  <div class="mockup-nav">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="url">novasphere.io</span>
+                  </div>
+                  <div class="mockup-body flex-center">
+                    <div class="glowing-3d-sphere-preview"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="project-info">
+              <div class="project-meta">
+                <span class="project-cat">AI Application</span>
+                <span class="project-result">Sub-100ms Latency</span>
+              </div>
+              <h3 class="project-name">NovaSphere — Spatial 3D Intelligence</h3>
+              <p class="project-desc">Real-time 3D spatial analytics platform powered by custom vision models and WebGL rendering engines.</p>
+              <div class="project-action">
+                <span>View Mission</span>
+                <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- Project 3 -->
+          <div class="project-card" data-category="mobile" data-tilt>
+            <div class="project-image-wrap">
+              <div class="project-mockup mockup-mobile">
+                <div class="mobile-frame">
+                  <div class="mobile-notch"></div>
+                  <div class="mobile-screen">
+                    <div class="card-balance">$142,850.00</div>
+                    <div class="card-chip">⚡ QuantumPay</div>
+                    <div class="card-mini-graph"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="project-info">
+              <div class="project-meta">
+                <span class="project-cat">Mobile App</span>
+                <span class="project-result">4.9★ App Store Rating</span>
+              </div>
+              <h3 class="project-name">Velocity Mobile — Neobanking & Wealth App</h3>
+              <p class="project-desc">Ultra-fast fintech mobile application featuring biometric security, instant cross-border transfers, and AI budgeting advice.</p>
+              <div class="project-action">
+                <span>View Mission</span>
+                <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- Project 4 -->
+          <div class="project-card" data-category="luxury" data-tilt>
+            <div class="project-image-wrap">
+              <div class="project-mockup mockup-lumiere">
+                <div class="mockup-ui">
+                  <div class="mockup-nav">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="url">lumiere-horlogerie.fr</span>
+                  </div>
+                  <div class="mockup-body luxury-body">
+                    <span class="luxury-title">LUMIÈRE PARIS</span>
+                    <span class="luxury-sub">HAUTE HORLOGERIE 2026</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="project-info">
+              <div class="project-meta">
+                <span class="project-cat">Luxury Brand</span>
+                <span class="project-result">+210% Online Sales</span>
+              </div>
+              <h3 class="project-name">Lumière Paris — Haute Horlogerie E-Commerce</h3>
+              <p class="project-desc">A 3D interactive luxury watch configurator and e-commerce experience for a prestigious Parisian watchmaker.</p>
+              <div class="project-action">
+                <span>View Mission</span>
+                <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- Project 5 -->
+          <div class="project-card" data-category="fintech" data-tilt>
+            <div class="project-image-wrap">
+              <div class="project-mockup mockup-apex">
+                <div class="mockup-ui">
+                  <div class="mockup-nav">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="url">apex.financial/pro</span>
+                  </div>
+                  <div class="mockup-body apex-body">
+                    <div class="stat-grid">
+                      <div class="mini-card"><span>LIQUIDITY</span><strong>$84.2M</strong></div>
+                      <div class="mini-card"><span>SPREAD</span><strong>0.002%</strong></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="project-info">
+              <div class="project-meta">
+                <span class="project-cat">Fintech Dashboard</span>
+                <span class="project-result">60% Drop-off Reduction</span>
+              </div>
+              <h3 class="project-name">Apex Financial — Institutional Trading Terminal</h3>
+              <p class="project-desc">High-frequency trading terminal with real-time WebSocket data feeds, modular widgets, and customizable dark UI themes.</p>
+              <div class="project-action">
+                <span>View Mission</span>
+                <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- Project 6 -->
+          <div class="project-card" data-category="saas" data-tilt>
+            <div class="project-image-wrap">
+              <div class="project-mockup mockup-vapor">
+                <div class="mockup-ui">
+                  <div class="mockup-nav">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="url">vapor3d.com</span>
+                  </div>
+                  <div class="mockup-body vapor-body">
+                    <div class="vapor-mesh-bg"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="project-info">
+              <div class="project-meta">
+                <span class="project-cat">E-Commerce Experience</span>
+                <span class="project-result">2.1s Page Load Time</span>
+              </div>
+              <h3 class="project-name">Vapor Commerce — 3D Spatial Shopping</h3>
+              <p class="project-desc">An immersive WebXR e-commerce store allowing customers to view products in 3D AR before purchasing.</p>
+              <div class="project-action">
+                <span>View Mission</span>
+                <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2"/></svg>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURED CASE STUDY -->
+    <section id="case-study">
+      <div class="container">
+        <div class="case-study-box">
+          <div class="case-study-badge">FEATURED CASE STUDY</div>
+          
+          <div class="case-study-header">
+            <h2 class="case-study-title">Scaling Aether AI From Seed To <span class="text-gradient">Series A Leader</span></h2>
+            <p class="case-study-subtitle">How Supernova redesigned Aether AI's SaaS workspace and AI engine to unlock massive conversion lift and enterprise client wins.</p>
+          </div>
+
+          <div class="case-study-content">
+            <div class="cs-col">
+              <h3>The Challenge</h3>
+              <p>Aether AI had a powerful LLM backend but struggled with a complex legacy interface that resulted in a 65% trial drop-off rate and low user retention.</p>
+              
+              <h3 style="margin-top: 24px;">Supernova's Solution</h3>
+              <p>We architected a futuristic, zero-friction workspace UI, engineered custom agentic flows, and reduced load times from 6.4s down to 2.1s.</p>
+              
+              <div class="cs-services-list">
+                <span>UX Strategy</span><span>Design System</span><span>Next.js App</span><span>AI Interface</span>
+              </div>
+            </div>
+
+            <div class="cs-col cs-stats-grid">
+              <div class="cs-stat-card">
+                <span class="cs-stat-number" data-count="3.2">0</span><span class="cs-stat-suffix">x</span>
+                <span class="cs-stat-label">Conversion Rate Increase</span>
+              </div>
+              <div class="cs-stat-card">
+                <span class="cs-stat-number" data-count="48">0</span><span class="cs-stat-suffix">%</span>
+                <span class="cs-stat-label">User Engagement Lift</span>
+              </div>
+              <div class="cs-stat-card">
+                <span class="cs-stat-number" data-count="2.1">0</span><span class="cs-stat-suffix">s</span>
+                <span class="cs-stat-label">Ultra-Fast Loading Time</span>
+              </div>
+              <div class="cs-stat-card">
+                <span class="cs-stat-number" data-count="60">0</span><span class="cs-stat-suffix">%</span>
+                <span class="cs-stat-label">User Drop-Off Reduction</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- AGENCY PROCESS SECTION -->
+    <section id="process">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">// FROM IDEA TO IMPACT</span>
+          <h2 class="section-title">Our Battle-Tested <span class="text-gradient">6-Step Orbital Engine</span></h2>
+          <p class="section-sub">A structured, fast-paced methodology that takes your product from concept to market leadership.</p>
+        </div>
+
+        <div class="process-steps">
+          
+          <div class="process-step">
+            <div class="step-number">01</div>
+            <div class="step-node"><div class="node-pulse"></div></div>
+            <div class="step-content">
+              <h3>Discover</h3>
+              <p>We audit your market positioning, analyze user friction points, and define precise product benchmarks for your digital transformation.</p>
+            </div>
+          </div>
+
+          <div class="process-step">
+            <div class="step-number">02</div>
+            <div class="step-node"><div class="node-pulse"></div></div>
+            <div class="step-content">
+              <h3>Strategize</h3>
+              <p>We blueprint the information architecture, user journeys, technology stack, and AI integrations needed for maximum impact.</p>
+            </div>
+          </div>
+
+          <div class="process-step">
+            <div class="step-number">03</div>
+            <div class="step-node"><div class="node-pulse"></div></div>
+            <div class="step-content">
+              <h3>Design</h3>
+              <p>Our world-class UI/UX designers craft bespoke 3D assets, dynamic prototypes, and scalable design systems that outshine competitors.</p>
+            </div>
+          </div>
+
+          <div class="process-step">
+            <div class="step-number">04</div>
+            <div class="step-node"><div class="node-pulse"></div></div>
+            <div class="step-content">
+              <h3>Build</h3>
+              <p>Our senior engineers write clean, modular, and optimized code with custom WebGL, Next.js, and backend integrations.</p>
+            </div>
+          </div>
+
+          <div class="process-step">
+            <div class="step-number">05</div>
+            <div class="step-node"><div class="node-pulse"></div></div>
+            <div class="step-content">
+              <h3>Launch</h3>
+              <p>Rigorous QA testing, accessibility validation, speed optimization, and zero-downtime deployment to global edge networks.</p>
+            </div>
+          </div>
+
+          <div class="process-step">
+            <div class="step-number">06</div>
+            <div class="step-node"><div class="node-pulse"></div></div>
+            <div class="step-content">
+              <h3>Scale</h3>
+              <p>Post-launch monitoring, conversion optimization, A/B testing, and feature enhancements to sustain rapid market expansion.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- WEBSITE COST CALCULATOR SECTION -->
+    <section id="calculator">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">// PROJECT ESTIMATOR</span>
+          <h2 class="section-title">Calculate Your <span class="text-gradient">Project Investment</span></h2>
+          <p class="section-sub">Select your project parameters to generate a real-time estimated budget and timeline.</p>
+        </div>
+
+        <div class="calculator-box">
+          <div class="calc-grid">
+            
+            <!-- Calc Controls -->
+            <div class="calc-controls">
+              
+              <!-- Project Type -->
+              <div class="calc-group">
+                <label class="calc-label">1. Select Project Type</label>
+                <div class="calc-options-grid" id="project-type-options">
+                  <button type="button" class="calc-btn active" data-type="business" data-price="4500">Business Website</button>
+                  <button type="button" class="calc-btn" data-type="ecommerce" data-price="7500">E-Commerce Experience</button>
+                  <button type="button" class="calc-btn" data-type="saas" data-price="12000">SaaS Platform</button>
+                  <button type="button" class="calc-btn" data-type="ai" data-price="14000">AI Application</button>
+                  <button type="button" class="calc-btn" data-type="mobile" data-price="10000">Mobile App</button>
+                </div>
+              </div>
+
+              <!-- Additional Requirements -->
+              <div class="calc-group">
+                <label class="calc-label">2. Additional Requirements</label>
+                <div class="calc-addons-grid" id="addons-options">
+                  <label class="addon-checkbox">
+                    <input type="checkbox" value="2500" data-name="Custom UI/UX">
+                    <span class="addon-pill">Custom UI/UX Design System (+ $2.5k)</span>
+                  </label>
+                  <label class="addon-checkbox">
+                    <input type="checkbox" value="3500" data-name="3D Animations">
+                    <span class="addon-pill">Interactive 3D WebGL (+ $3.5k)</span>
+                  </label>
+                  <label class="addon-checkbox">
+                    <input type="checkbox" value="1500" data-name="User Auth">
+                    <span class="addon-pill">User Authentication & Roles (+ $1.5k)</span>
+                  </label>
+                  <label class="addon-checkbox">
+                    <input type="checkbox" value="2000" data-name="Payment Integration">
+                    <span class="addon-pill">Stripe Payment Integration (+ $2.0k)</span>
+                  </label>
+                  <label class="addon-checkbox">
+                    <input type="checkbox" value="3000" data-name="Admin Dashboard">
+                    <span class="addon-pill">Admin Dashboard & Analytics (+ $3.0k)</span>
+                  </label>
+                  <label class="addon-checkbox">
+                    <input type="checkbox" value="4500" data-name="AI Integration">
+                    <span class="addon-pill">Custom AI LLM Integration (+ $4.5k)</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Timeline -->
+              <div class="calc-group">
+                <label class="calc-label">3. Desired Timeline</label>
+                <div class="calc-timeline-grid" id="timeline-options">
+                  <button type="button" class="timeline-btn active" data-mult="1.0" data-label="Standard (4-6 wks)">Standard (4-6 wks)</button>
+                  <button type="button" class="timeline-btn" data-mult="1.25" data-label="Priority (2-3 wks)">Priority (+25% speed)</button>
+                  <button type="button" class="timeline-btn" data-mult="1.5" data-label="Express (1-2 wks)">Express (+50% sprint)</button>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Calc Result Display -->
+            <div class="calc-result">
+              <div class="result-card">
+                <span class="result-tag">ESTIMATED INVESTMENT RANGE</span>
+                
+                <div class="price-display">
+                  <span id="price-min">$7,000</span>
+                  <span class="price-sep">–</span>
+                  <span id="price-max">$9,500</span>
+                </div>
+
+                <div class="result-details">
+                  <div class="res-row">
+                    <span>Base Selected:</span>
+                    <strong id="res-base-name">Business Website</strong>
+                  </div>
+                  <div class="res-row">
+                    <span>Selected Addons:</span>
+                    <strong id="res-addons-count">0 Addons</strong>
+                  </div>
+                  <div class="res-row">
+                    <span>Target Timeline:</span>
+                    <strong id="res-timeline-name">Standard (4-6 wks)</strong>
+                  </div>
+                </div>
+
+                <a href="#contact" class="btn btn-primary btn-block btn-magnetic" id="proposal-btn">
+                  <span>Get A Detailed Proposal</span>
+                  <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2"/></svg>
+                </a>
+
+                <p class="calc-note">*Final proposal may vary based on full scope requirements.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS SECTION -->
+    <section id="testimonials" class="cursor-hover-drag">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">// CLIENT FEEDBACK</span>
+          <h2 class="section-title">What Our <span class="text-gradient">Partners Say</span></h2>
+          <p class="section-sub">Hear directly from the SaaS founders and brand leaders we work with.</p>
+        </div>
+
+        <div class="testimonials-slider-wrap">
+          <div class="testimonials-slider">
+            
+            <!-- Slide 1 -->
+            <div class="testimonial-card">
+              <div class="t-quote">“Supernova transformed our SaaS platform. Their 3D WebGL design and custom AI interface boosted our trial conversion rate by 320% in the first month alone.”</div>
+              <div class="t-author">
+                <div class="t-avatar" style="background-image: url('https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80');"></div>
+                <div class="t-info">
+                  <strong>Elena Rostova</strong>
+                  <span>Founder & CEO, TechVault (London, UK)</span>
+                  <span class="t-badge">SaaS Platform</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Slide 2 -->
+            <div class="testimonial-card">
+              <div class="t-quote">“The attention to detail, motion physics, and design system Supernova delivered is unmatched. They don't just build websites — they build market category leaders.”</div>
+              <div class="t-author">
+                <div class="t-avatar" style="background-image: url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80');"></div>
+                <div class="t-info">
+                  <strong>Marcus Vance</strong>
+                  <span>Chief Product Officer, QuantumPay (New York, USA)</span>
+                  <span class="t-badge">Fintech Mobile App</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Slide 3 -->
+            <div class="testimonial-card">
+              <div class="t-quote">“Working with Supernova felt like stepping into the future. They engineered our 3D luxury horlogerie configurator with sub-2s loading times across mobile and web.”</div>
+              <div class="t-author">
+                <div class="t-avatar" style="background-image: url('https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80');"></div>
+                <div class="t-info">
+                  <strong>Kaiji Takahashi</strong>
+                  <span>Managing Director, Lumière Paris (Tokyo, Japan)</span>
+                  <span class="t-badge">Luxury E-Commerce</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT SUPERNOVA -->
+    <section id="about">
+      <div class="container">
+        <div class="about-grid">
+          
+          <div class="about-text-col">
+            <span class="section-tag">// ABOUT SUPERNOVA</span>
+            <h2 class="section-title">Small Team. <span class="text-gradient">Massive Impact.</span></h2>
+            <p class="about-copy">
+              Supernova brings together elite strategy, high-end design, advanced WebGL engineering, and AI architecture to build digital products that move businesses forward.
+            </p>
+            <p class="about-copy">
+              We operate as a high-focus boutique studio, taking on a limited number of clients per quarter to ensure every single product receives intense creative and technical dedication.
+            </p>
+          </div>
+
+          <div class="about-stats-col">
+            <div class="stats-card">
+              <div class="stat-item">
+                <span class="stat-val" data-count="50">0</span><span class="stat-plus">+</span>
+                <span class="stat-name">Digital Products Launched</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-val" data-count="12">0</span>
+                <span class="stat-name">Global Markets Served</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-val" data-count="98">0</span><span class="stat-plus">%</span>
+                <span class="stat-name">Client Satisfaction Rate</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-val" data-count="8">0</span><span class="stat-plus">+</span>
+                <span class="stat-name">Years Of Combined Mastery</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- FINAL CALL TO ACTION & CONTACT FORM -->
+    <section id="contact">
+      <div class="container">
+        
+        <div class="cta-banner">
+          <div class="cta-glow-bg"></div>
+          <h2 class="cta-title">Your Next Big Idea Deserves <br>More Than An <span class="text-gradient">Ordinary Website.</span></h2>
+          <p class="cta-sub">Let’s transform your vision into a powerful digital experience that dominates your market.</p>
+        </div>
+
+        <div class="contact-grid">
+          
+          <div class="contact-info">
+            <h3 class="c-info-title">Launch Your Project</h3>
+            <p class="c-info-sub">Ready to build something extraordinary? Fill out the project brief and our agency director will get back to you within 24 hours.</p>
+            
+            <div class="c-details">
+              <div class="c-detail-item">
+                <span class="c-label">DIRECT INQUIRIES</span>
+                <a href="mailto:hello@supernova-agency.com" class="c-val">hello@supernova-agency.com</a>
+              </div>
+              <div class="c-detail-item">
+                <span class="c-label">STUDIO LOCATIONS</span>
+                <span class="c-val">San Francisco · London · Tokyo</span>
+              </div>
+              <div class="c-detail-item">
+                <span class="c-label">CURRENT AVAILABILITY</span>
+                <span class="c-val status-avail">⚡ Accepting Q3/Q4 Projects</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-form-wrap">
+            <form id="project-form">
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="name">Your Name *</label>
+                  <input type="text" id="name" required placeholder="Alexander Vance">
+                </div>
+                <div class="form-group">
+                  <label for="email">Email Address *</label>
+                  <input type="email" id="email" required placeholder="alex@company.com">
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="company">Company / Startup</label>
+                  <input type="text" id="company" placeholder="Aether Labs">
+                </div>
+                <div class="form-group">
+                  <label for="project-type">Project Type *</label>
+                  <select id="project-type" required>
+                    <option value="" disabled selected>Select Project Scope</option>
+                    <option value="website">Premium Website Design</option>
+                    <option value="ai">AI Application / LLM Integration</option>
+                    <option value="saas">SaaS Platform Development</option>
+                    <option value="mobile">Mobile Application (iOS/Android)</option>
+                    <option value="design-system">UI/UX Design System</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="budget">Estimated Budget (USD) *</label>
+                <select id="budget" required>
+                  <option value="" disabled selected>Select Budget Range</option>
+                  <option value="5k-10k">$5,000 – $10,000</option>
+                  <option value="10k-25k">$10,000 – $25,000</option>
+                  <option value="25k-50k">$25,000 – $50,000</option>
+                  <option value="50k+">$50,000+</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="details">Project Details *</label>
+                <textarea id="details" rows="4" required placeholder="Tell us about your goals, target audience, key features, and timeline..."></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-block btn-magnetic">
+                <span>Launch Your Project</span>
+                <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2"/></svg>
+              </button>
+
+            </form>
+
+            <div id="form-success" class="form-success-overlay">
+              <div class="success-icon">✦</div>
+              <h3>Mission Brief Received</h3>
+              <p>Thank you! Our lead strategist will review your requirements and reach out within 24 hours with a detailed proposal.</p>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container footer-grid">
+      
+      <div class="footer-brand">
+        <a href="#" class="nav-logo">
+          <span class="logo-icon">✦</span>
+          <span class="logo-text">SUPERNOVA</span>
+        </a>
+        <p class="footer-tagline">Designed to go beyond ordinary.</p>
+      </div>
+
+      <div class="footer-nav">
+        <div class="footer-col">
+          <span>NAVIGATION</span>
+          <a href="#services">Services</a>
+          <a href="#portfolio">Work</a>
+          <a href="#process">Process</a>
+          <a href="#calculator">Calculator</a>
+        </div>
+
+        <div class="footer-col">
+          <span>SOCIALS</span>
+          <a href="https://twitter.com" target="_blank">Twitter / X</a>
+          <a href="https://linkedin.com" target="_blank">LinkedIn</a>
+          <a href="https://dribbble.com" target="_blank">Dribbble</a>
+          <a href="https://github.com" target="_blank">GitHub</a>
+        </div>
+
+        <div class="footer-col">
+          <span>LEGAL</span>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Security</a>
+        </div>
+      </div>
+
     </div>
-    <div class="timeline">
-      <div class="tl-item">
-        <div class="tl-dot"></div>
-        <div class="tl-period">08/2026 – PRESENT</div>
-        <div class="tl-title">AI Benchmarking & Performance Engineering</div>
-        <ul class="tl-bullets">
-          <li>Lead competitive analysis of AI inference workloads across <strong style="color:var(--cyan)">NVIDIA, AMD, and Qualcomm</strong> platforms, measuring latency, throughput (FPS), memory usage, and power efficiency</li>
-          <li>Profile deep learning pipelines using <strong style="color:var(--cyan)">Intel VTune, NVIDIA Nsight, and Linux perf</strong> to identify CPU/GPU/NPU bottlenecks and drive targeted optimizations</li>
-          <li>Optimize <strong style="color:var(--cyan)">PyTorch and ONNX</strong> models using quantization (INT8/FP16) and operator fusion, reducing memory footprint by 30% while maintaining accuracy</li>
-          <li>Develop robust <strong style="color:var(--cyan)">Python and C/C++</strong> automation frameworks to execute benchmarks, collect hardware telemetry, and auto-generate technical performance reports</li>
-          <li>Execute <strong style="color:var(--cyan)">MLPerf</strong> benchmarks and power efficiency analysis (Perf/Watt) on edge AI and datacenter hardware</li>
-        </ul>
+
+    <div class="footer-bottom">
+      <div class="container flex-between">
+        <span>© 2026 SUPERNOVA AGENCY INC. ALL RIGHTS RESERVED.</span>
+        <span>HIGH-PERFORMANCE 3D WEBGL ARCHITECTURE</span>
       </div>
     </div>
-  </div>
+  </footer>
 
-  <!-- AMD -->
-  <div class="exp-company">
-    <div class="company-header">
-      <div class="company-logo">IT</div>
-      <div class="company-info">
-        <h3>INFOBELL IT</h3>
-        <p>Senior Software Engineer · Client: AMD – DEAE Team</p>
-      </div>
-      <div class="company-badge">01/2022 – PRESENT</div>
-    </div>
-    <div class="timeline">
-      <div class="tl-item">
-        <div class="tl-dot"></div>
-        <div class="tl-period">02/2022 – 05/2024</div>
-        <div class="tl-title">AI/ML Benchmarking & Infrastructure Automation</div>
-        <ul class="tl-bullets">
-          <li>Executed MLPerf, LLaMA 2, TPCx-AI benchmarks on AMD Genoa and Turin CPUs; analyzed throughput, scalability, and efficiency</li>
-          <li>Automated OS installation (OpenBMC, Dell iDRAC, HP iLO) via Kickstart & Cloud-Init, reducing deployment time from 2 hours → 15 minutes</li>
-          <li>Built Python + Selenium automation for BIOS/FPGA configuration and unattended OS installation workflows</li>
-          <li>Designed ScaleBench AI: scalable LLM benchmarking tool supporting vLLM, TGI, Ollama, LlamaCPP with automated latency and throughput evaluation</li>
-        </ul>
-      </div>
-      <div class="tl-item">
-        <div class="tl-dot"></div>
-        <div class="tl-period">11/2023 – PRESENT</div>
-        <div class="tl-title">Applied Generative AI Engineering</div>
-        <ul class="tl-bullets">
-          <li>Built ConvoGene RAG chatbot (OpenAI + LangChain) with hybrid retrieval and observability monitoring for AMD teams querying private PDFs</li>
-          <li>Engineered multi-agent RCA Troubleshooting System (LangChain + LangGraph) for automated root cause analysis</li>
-          <li>Engineered MCP-driven RAG pipelines for log diagnostics and benchmark orchestration automation</li>
-        </ul>
-      </div>
-      <div class="tl-item">
-        <div class="tl-dot"></div>
-        <div class="tl-period">2024 – PRESENT</div>
-        <div class="tl-title">EPDW Hub — Agentic NLP Benchmark Assistance</div>
-        <ul class="tl-bullets">
-          <li>Developed an agentic NLP-powered benchmark assistance system enabling engineers to trigger, schedule, and manage benchmarks using natural language commands</li>
-          <li>Agents interface directly with EPDW Tool APIs to handle benchmark scheduling, server pool management, and real-time status checks</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <!-- IBM -->
-  <div class="exp-company">
-    <div class="company-header">
-      <div class="company-logo" style="background:linear-gradient(135deg,#1f70c1,#00d4ff)">IBM</div>
-      <div class="company-info">
-        <h3>INFOBELL IT</h3>
-        <p>Senior Software Engineer · Client: IBM – AI Performance Engineer</p>
-      </div>
-      <div class="company-badge">08/2024 – PRESENT</div>
-    </div>
-    <div class="timeline">
-      <div class="tl-item">
-        <div class="tl-dot"></div>
-        <div class="tl-period">01/2025 – PRESENT</div>
-        <div class="tl-title">LLM Inference & Accelerator Performance Engineering</div>
-        <ul class="tl-bullets">
-          <li>Benchmarked Granite-8B and Meta LLaMA-3.2-70B across Intel Gaudi3 and NVIDIA H100; optimized throughput, latency, and memory footprint</li>
-          <li>Conducted comparative studies: Gaudi3 vs NVIDIA H100 vs L4 GPUs with hardware-specific optimizations</li>
-          <li>Deployed and evaluated LLM inference: PyTorch vs Intel IPEX on Intel Sapphire Rapids systems</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- FEATURED PROJECTS -->
-<section id="projects">
-  <div class="section-header">
-    <div class="section-tag">// 04 — PORTFOLIO</div>
-    <h2 class="section-title">FEATURED <span>PROJECTS</span><span class="section-line"></span></h2>
-  </div>
-  <div class="proj-filter">
-    <button class="filter-btn active" data-filter="all">All</button>
-    <button class="filter-btn" data-filter="bench">Benchmarking</button>
-    <button class="filter-btn" data-filter="genai">Gen AI</button>
-    <button class="filter-btn" data-filter="mlops">MLOps</button>
-    <button class="filter-btn" data-filter="auto">Automation</button>
-  </div>
-  <div class="proj-grid">
-
-    <div class="proj-card" data-cat="bench">
-      <div class="proj-top">
-        <span class="proj-cat cat-bench">Benchmarking</span>
-        <a href="https://github.com/Dudekulabasha03" target="_blank" class="proj-github">⌥ GitHub</a>
-      </div>
-      <div class="proj-name">Cross-Platform AI Benchmarking Suite</div>
-      <div class="proj-desc">End-to-end automated benchmarking tool evaluating LLM and CNN performance across heterogeneous hardware (AMD MI300, NVIDIA H100, Qualcomm NPUs). Automated collection of latency, memory bandwidth, FPS, and power draw.</div>
-      <div class="proj-tags">
-        <span class="proj-tag">PyTorch</span><span class="proj-tag">ONNX</span>
-        <span class="proj-tag">Python</span><span class="proj-tag">C++</span>
-        <span class="proj-tag">VTune</span><span class="proj-tag">Nsight</span>
-        <span class="proj-tag">MLPerf</span>
-      </div>
-    </div>
-
-    <div class="proj-card" data-cat="bench">
-      <div class="proj-top">
-        <span class="proj-cat cat-bench">Benchmarking</span>
-        <a href="https://github.com/Dudekulabasha03" target="_blank" class="proj-github">⌥ GitHub</a>
-      </div>
-      <div class="proj-name">MLPerf Inference Optimization — Edge & Datacenter</div>
-      <div class="proj-desc">Optimized ResNet and BERT models targeting MLPerf benchmark standards. Used NVIDIA Nsight Compute to identify shared memory bottlenecks in CUDA kernels, rewriting them for 2.5× speedup.</div>
-      <div class="proj-tags">
-        <span class="proj-tag">MLPerf</span><span class="proj-tag">TensorRT</span>
-        <span class="proj-tag">ONNX</span><span class="proj-tag">Nsight Compute</span>
-        <span class="proj-tag">CUDA C++</span>
-      </div>
-    </div>
-
-    <div class="proj-card" data-cat="genai">
-      <div class="proj-top">
-        <span class="proj-cat cat-genai">Gen AI</span>
-        <a href="https://github.com/Dudekulabasha03" target="_blank" class="proj-github">⌥ GitHub</a>
-      </div>
-      <div class="proj-name">EPDW Hub — Agentic NLP Benchmark Assistance</div>
-      <div class="proj-desc">Next-gen benchmark assistant enabling engineers to trigger, schedule, and manage benchmarks using natural language commands interfacing directly with EPDW Tool APIs.</div>
-      <div class="proj-tags">
-        <span class="proj-tag">Agentic AI</span><span class="proj-tag">NLP</span><span class="proj-tag">LangGraph</span><span class="proj-tag">EPDW API</span>
-      </div>
-    </div>
-
-    <div class="proj-card" data-cat="bench">
-      <div class="proj-top">
-        <span class="proj-cat cat-bench">Benchmarking</span>
-        <a href="https://github.com/Dudekulabasha03" target="_blank" class="proj-github">⌥ GitHub</a>
-      </div>
-      <div class="proj-name">ScaleBench AI — LLM Inference Benchmarking Tool</div>
-      <div class="proj-desc">Scalable multi-backend benchmarking tool for vLLM, TGI, Ollama, and LlamaCPP. Automated latency, throughput, and TTFT evaluation.</div>
-      <div class="proj-tags">
-        <span class="proj-tag">vLLM</span><span class="proj-tag">TGI</span><span class="proj-tag">Python</span><span class="proj-tag">REST APIs</span>
-      </div>
-    </div>
-
-    <div class="proj-card" data-cat="genai">
-      <div class="proj-top">
-        <span class="proj-cat cat-genai">Gen AI</span>
-        <a href="https://github.com/Dudekulabasha03" target="_blank" class="proj-github">⌥ GitHub</a>
-      </div>
-      <div class="proj-name">RCAgen AI — Autonomous Troubleshooting System</div>
-      <div class="proj-desc">Multi-agent RCA system using LangGraph and MCP. Planner, Executor, Analyzer, and Reporter agents coordinate log diagnostics and result summarization.</div>
-      <div class="proj-tags">
-        <span class="proj-tag">LangGraph</span><span class="proj-tag">LangChain</span><span class="proj-tag">MCP</span>
-      </div>
-    </div>
-
-    <div class="proj-card" data-cat="mlops">
-      <div class="proj-top">
-        <span class="proj-cat cat-mlops">MLOps</span>
-        <a href="https://github.com/Dudekulabasha03" target="_blank" class="proj-github">⌥ GitHub</a>
-      </div>
-      <div class="proj-name">Serverless RAG Architecture — AWS</div>
-      <div class="proj-desc">Scalable serverless RAG on AWS using API Gateway, Lambda, Bedrock, OpenSearch, and S3 for document intelligence and semantic Q&A.</div>
-      <div class="proj-tags">
-        <span class="proj-tag">AWS Bedrock</span><span class="proj-tag">OpenSearch</span><span class="proj-tag">Lambda</span>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<!-- CERTS -->
-<section id="certs">
-  <div class="section-header">
-    <div class="section-tag">// 05 — CREDENTIALS</div>
-    <h2 class="section-title">EDUCATION & <span>CERTIFICATIONS</span><span class="section-line"></span></h2>
-  </div>
-  <div class="edu-card">
-    <div class="edu-icon">🎓</div>
-    <div class="edu-info">
-      <h3>B.Tech in Computer Science & Engineering</h3>
-      <p>Madanapalle Institute of Technology & Science (May 2018 – June 2022)</p>
-      <div class="edu-grade">CGPA: 8.6 / 10.0</div>
-    </div>
-  </div>
-  <div class="certs-grid">
-    <div class="cert-card">
-      <div class="cert-icon" style="background:rgba(255,153,0,0.15)">☁</div>
-      <div class="cert-info">
-        <div class="cert-name">AWS Certified Solutions Architect – Associate</div>
-        <div class="cert-org">Amazon Web Services · SAA-C03</div>
-      </div>
-    </div>
-    <div class="cert-card">
-      <div class="cert-icon" style="background:rgba(0,240,255,0.1)">⎈</div>
-      <div class="cert-info">
-        <div class="cert-name">Certified Kubernetes Administrator</div>
-        <div class="cert-org">Linux Foundation · CKA</div>
-      </div>
-    </div>
-    <div class="cert-card">
-      <div class="cert-icon" style="background:rgba(0,255,157,0.1)">🐧</div>
-      <div class="cert-info">
-        <div class="cert-name">Linux Foundation Certified Sys Admin</div>
-        <div class="cert-org">Linux Foundation · LFCS</div>
-      </div>
-    </div>
-    <div class="cert-card">
-      <div class="cert-icon" style="background:rgba(255,215,0,0.1)">🐍</div>
-      <div class="cert-info">
-        <div class="cert-name">PCAP – Certified Associate in Python</div>
-        <div class="cert-org">Python Institute</div>
-      </div>
-    </div>
-    <div class="cert-card">
-      <div class="cert-icon" style="background:rgba(255,107,53,0.1)">🤗</div>
-      <div class="cert-info">
-        <div class="cert-name">Fundamentals of Agents</div>
-        <div class="cert-org">Hugging Face · Professional Certificate</div>
-      </div>
-    </div>
-    <div class="cert-card">
-      <div class="cert-icon" style="background:rgba(138,43,226,0.15)">◈</div>
-      <div class="cert-info">
-        <div class="cert-name">IBM RAG and Agentic AI</div>
-        <div class="cert-org">IBM · Coursera Professional Certificate</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CONTACT -->
-<section id="contact">
-  <div class="section-header">
-    <div class="section-tag">// 06 — LET'S CONNECT</div>
-    <h2 class="section-title">GET IN <span>TOUCH</span><span class="section-line"></span></h2>
-  </div>
-  <div class="contact-box">
-    <div class="contact-inner">
-      <h3 class="contact-title">Open to Opportunities</h3>
-      <p class="contact-sub">
-        Whether it's a challenging AI performance engineering role, a research collaboration, or an enterprise consulting project — I'm ready to build something remarkable.
-      </p>
-      <div class="contact-links">
-        <a href="https://github.com/Dudekulabasha03" target="_blank" class="contact-btn cb-github">⌥ GitHub</a>
-        <a href="https://linkedin.com/in/bashadude" target="_blank" class="contact-btn cb-linkedin">in LinkedIn</a>
-        <a href="mailto:mahaboobbashadudekula3@gmail.com" class="contact-btn cb-email">@ Send Email</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <span>© 2026 <span>Mahaboobbasha Dudekula</span> · AI Performance Engineer</span>
-  <span style="font-size:0.75rem">3D Cinematic Space Edition</span>
-</footer>
-
-<!-- 3D SPACE CANVAS (THREE.JS) -->
-<script>
-const canvas = document.getElementById('spaceCanvas');
-const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-renderer.setSize(window.innerWidth, window.innerHeight);
-
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-camera.position.z = 8;
-
-window.addEventListener('resize', () => {
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-});
-
-// STARFIELD PARTICLES
-const STAR_COUNT = 1500;
-const starGeo = new THREE.BufferGeometry();
-const starPos = new Float32Array(STAR_COUNT * 3);
-const starVel = [];
-
-for(let i=0; i<STAR_COUNT; i++) {
-  starPos[i*3] = (Math.random() - 0.5) * 35;
-  starPos[i*3+1] = (Math.random() - 0.5) * 35;
-  starPos[i*3+2] = (Math.random() - 0.5) * 20;
-  starVel.push({ x: (Math.random() - 0.5) * 0.005, y: (Math.random() - 0.5) * 0.005 });
-}
-starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
-const starMat = new THREE.PointsMaterial({ color: 0x00f0ff, size: 0.05, transparent: true, opacity: 0.8 });
-const starField = new THREE.Points(starGeo, starMat);
-scene.add(starField);
-
-// FLOATING 3D SPACE GEOMETRIES
-const shapes = [
-  { geo: new THREE.IcosahedronGeometry(1.2, 0), color: 0x8a2be2, x: 4.5, y: 1.5, z: -2 },
-  { geo: new THREE.OctahedronGeometry(0.7, 0), color: 0x00f0ff, x: -4.2, y: -2, z: -1 },
-  { geo: new THREE.TorusGeometry(0.8, 0.09, 12, 30), color: 0x00ff9d, x: -3.5, y: 2.5, z: 0 },
-  { geo: new THREE.TetrahedronGeometry(0.6, 0), color: 0xff007f, x: 3.8, y: -2.5, z: 0 }
-];
-
-const meshes = shapes.map(s => {
-  const mat = new THREE.MeshBasicMaterial({ color: s.color, wireframe: true, transparent: true, opacity: 0.35 });
-  const mesh = new THREE.Mesh(s.geo, mat);
-  mesh.position.set(s.x, s.y, s.z);
-  scene.add(mesh);
-  return mesh;
-});
-
-// PARALLAX
-let mx = 0, my = 0;
-window.addEventListener('mousemove', e => {
-  mx = (e.clientX / window.innerWidth - 0.5) * 2;
-  my = (e.clientY / window.innerHeight - 0.5) * 2;
-});
-
-const clock = new THREE.Clock();
-function animate() {
-  requestAnimationFrame(animate);
-  const t = clock.getElapsedTime();
-
-  meshes.forEach((m, i) => {
-    m.rotation.x = t * (0.2 + i * 0.08);
-    m.rotation.y = t * (0.3 + i * 0.1);
-    m.position.y = shapes[i].y + Math.sin(t * 0.6 + i) * 0.3;
-  });
-
-  camera.position.x += (mx * 0.6 - camera.position.x) * 0.05;
-  camera.position.y += (-my * 0.4 - camera.position.y) * 0.05;
-  camera.lookAt(scene.position);
-
-  renderer.render(scene, camera);
-}
-animate();
-
-// TYPEWRITER
-const roles = ['AI Performance Engineer', '3D Benchmarking Expert', 'LLM Inference Optimizer', 'MLPerf Specialist', 'Gen AI Developer'];
-let ri = 0, ci = 0, del = false;
-const typeEl = document.getElementById('typeText');
-
-function type() {
-  const word = roles[ri];
-  if (!del) {
-    typeEl.textContent = word.slice(0, ++ci);
-    if (ci === word.length) { del = true; setTimeout(type, 1800); return; }
-    setTimeout(type, 80);
-  } else {
-    typeEl.textContent = word.slice(0, --ci);
-    if (ci === 0) { del = false; ri = (ri + 1) % roles.length; setTimeout(type, 300); return; }
-    setTimeout(type, 40);
-  }
-}
-type();
-
-// PROJECT FILTER
-document.querySelectorAll('.filter-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    const filter = btn.dataset.filter;
-    document.querySelectorAll('.proj-card').forEach(card => {
-      const show = filter === 'all' || card.dataset.cat === filter;
-      card.style.display = show ? 'flex' : 'none';
-    });
-  });
-});
-</script>
+  <!-- Custom JS -->
+  <script src="app.js"></script>
 </body>
 </html>
